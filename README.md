@@ -18,6 +18,10 @@ Further libraries the app uses are:
 - typeface-roboto -  The roboto typeface
 - vue-i18n - An internationalization plugin for Vue.js
 
+## Requirements
+
+You need to have Node.js installed. Verify that you are running at least node v12.13.0 and npm 6.14.10.
+
 ## Project setup
 
 After cloning the repository call
