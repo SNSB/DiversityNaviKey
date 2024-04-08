@@ -48,7 +48,7 @@ export default {
     let newAPPVersion = false
     try {
       const newAPIVersionData = await this.getData(false, 'onlineNoCache', serviceURL, apiVersionEndpoint, '', '')
-      if (newAPIVersionData) {
+      if (newAPIVersionData && newAPIVersionData.length > 0) {
         newAPIVersion = newAPIVersionData[0].API_VERSION
       }
     } catch (err) {
@@ -316,7 +316,7 @@ export default {
       case 'onlineFirst':
         try {
           responseData = await this.getDataOnline(hosturl, dbproject, table, key, pageParameter)
-          if (!responseData) {
+          if (!responseData || responseData.length === 0) {
             // try to get data online
             console.log('error in online mode try to get data from cache ')
             try {
@@ -370,7 +370,7 @@ export default {
         let triedonline = false
         try {
           responseData = await this.getDataFromCache(dbproject, table, key)
-          if (!responseData || responseData.length === 0) {
+          if ((!responseData || responseData.length === 0) && !optional) {
             // console.log('no cached data, try to get online 1')
             responseData = []
             try {
@@ -461,7 +461,7 @@ export default {
             getNext = false
             tempData = []
             console.log('error in getDataOnline(): ', err)
-            throw err
+            // throw err // ariane: cannot throw here, otherwise offline mode does not work
           }
         })
       responseData = responseData.concat(tempData)
