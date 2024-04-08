@@ -54,7 +54,7 @@ export default {
     showGroupDialog: false
   }),
   mounted () {
-    let savedLogOperator = this.$store.getters.getUserSelectedOperator
+    const savedLogOperator = this.$store.getters.getUserSelectedOperator
     if (savedLogOperator && Array.isArray(savedLogOperator) && savedLogOperator.length === 2) {
       this.logOperator = savedLogOperator[0]
       this.logOperatorSameDesc = savedLogOperator[1]

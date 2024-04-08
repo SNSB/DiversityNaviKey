@@ -56,7 +56,7 @@ export default {
       // throw err
     }
     const semver = require('semver')
-    let newVersionInfos = [{ 'id': 1, 'dnk_app_version': currentAppVersion, 'dnk_rest_version': newAPIVersion }]
+    const newVersionInfos = [{ id: 1, dnk_app_version: currentAppVersion, dnk_rest_version: newAPIVersion }]
     // compare new with cached
     if (cacheVersionInfos && cacheVersionInfos.length > 0) {
       const appversionOld = semver.clean(cacheVersionInfos[0].dnk_app_version)
@@ -107,18 +107,18 @@ export default {
         }
       }
     }
-    return { 'isNewAppVersion': newAPPVersion, 'isNewRestVersion': newRESTVersion }
+    return { isNewAppVersion: newAPPVersion, isNewRestVersion: newRESTVersion }
   },
   async checkDBChanges (listIndexedDBURL, tempDatasources, testTable) {
     // get list of all datasources from cache
     try {
-      let cachedListOfDatasources = await this.getData(false, 'offline', '', '', listIndexedDBURL, '', '')
-      let listForUpdates = []
+      const cachedListOfDatasources = await this.getData(false, 'offline', '', '', listIndexedDBURL, '', '')
+      const listForUpdates = []
       // check if updates are available
       if (cachedListOfDatasources && tempDatasources && tempDatasources.length > 0) {
         for (const cachedDBInfos of cachedListOfDatasources) {
           if (cachedDBInfos.ds_lastTransfer && cachedDBInfos.ds_lastTransfer !== '') {
-            let listOfNew = tempDatasources.filter(newTemp => newTemp.id === cachedDBInfos.id)
+            const listOfNew = tempDatasources.filter(newTemp => newTemp.id === cachedDBInfos.id)
             for (const newDBInfo of listOfNew) {
               if (newDBInfo.ds_lastTransfer && newDBInfo.ds_lastTransfer !== '') {
                 // compare
@@ -143,7 +143,7 @@ export default {
       }
       // delete cache for datasources included in listForUpdates
       if (listForUpdates && listForUpdates.length > 0) {
-        for (let idbToDelete of listForUpdates) {
+        for (const idbToDelete of listForUpdates) {
           console.log('idbtodelete', idbToDelete.ds_rest_endpoint)
           await this.deleteStoreFromCache(idbToDelete.ds_rest_endpoint, testTable)
         }
@@ -169,7 +169,7 @@ export default {
     let availableError = null
     if (availableDbs && availableDbs.length > 0) {
       // console.log('get list of dbs ')
-      let allAvailable = []
+      const allAvailable = []
       // get all schemas from all dbs
       for (const dbName of availableDbs) {
         const table = '/' + apiProjectsURL
@@ -193,10 +193,10 @@ export default {
       for (const dbs of allAvailable) {
         count++
         tempBindings.push({ bindingname: dbs.dbName, changeTo: 'DB' + count })
-        let values = Object.values(dbs.availableSchemas)
+        const values = Object.values(dbs.availableSchemas)
         for (const scheme of values) {
-          let restEndpoint = dbs.dbName + '/' + scheme.name + '/'
-          let newDatasource = { 'id': dbs.dbName + '_' + scheme.name, 'ds_name': dbs.dbName, 'displayName': scheme.name, 'projectTitle': scheme.master, 'ds_version': 0.3, 'ds_lastTransfer': '', 'scheme_lang': scheme.language, 'scheme_description': scheme.description, 'scheme_master': scheme.master, 'scheme_name': scheme.name, 'ds_rest_endpoint': restEndpoint }
+          const restEndpoint = dbs.dbName + '/' + scheme.name + '/'
+          const newDatasource = { id: dbs.dbName + '_' + scheme.name, ds_name: dbs.dbName, displayName: scheme.name, projectTitle: scheme.master, ds_version: 0.3, ds_lastTransfer: '', scheme_lang: scheme.language, scheme_description: scheme.description, scheme_master: scheme.master, scheme_name: scheme.name, ds_rest_endpoint: restEndpoint }
           tempDatasources.push(newDatasource)
         }
       }
@@ -234,19 +234,19 @@ export default {
           throw error
         }
         if (metadata && metadata.length > 0) {
-          mastersMetadata.push({ 'scheme_master': m.scheme_master, 'id': m.id, 'metadata': metadata })
+          mastersMetadata.push({ scheme_master: m.scheme_master, id: m.id, metadata: metadata })
           if (tempBindings) {
-            let tempName = tempBindings.filter(bind => bind.bindingname === m.ds_name)
+            const tempName = tempBindings.filter(bind => bind.bindingname === m.ds_name)
             m.displayName = metadata[0].ProjectTitleCode + ' – (' + tempName[0].changeTo + ')'
           } else {
             m.displayName = metadata[0].ProjectTitleCode
           }
           m.projectTitle = metadata[0].ProjectTitleCode
           // set last transfer date (only in master info available) to all tempDatasources of this master
-          let tempTemp = tempDatasources.filter(tempDS => tempDS.scheme_master === m.scheme_master && tempDS.ds_name === m.ds_name)
+          const tempTemp = tempDatasources.filter(tempDS => tempDS.scheme_master === m.scheme_master && tempDS.ds_name === m.ds_name)
           // console.log('tempTemp', tempTemp)
           if (tempTemp) {
-            for (let setLog of tempTemp) {
+            for (const setLog of tempTemp) {
               if (metadata[0].LogLastTransfer && metadata[0].LogLastTransfer !== '') {
                 setLog.ds_lastTransfer = metadata[0].LogLastTransfer
               } else {
@@ -319,11 +319,7 @@ export default {
           if (!responseData || responseData.length === 0) {
             // try to get data online
             console.log('error in online mode try to get data from cache ')
-            try {
-              responseData = await this.getDataFromCache(dbproject, table, key)
-            } catch (error) {
-              throw error
-            }
+            responseData = await this.getDataFromCache(dbproject, table, key)
           }
         } catch (error) {
           if (error.status_code === 401) {
@@ -365,12 +361,12 @@ export default {
           }
         }
         return responseData
-      default:
+      default: {
         // cacheFirst
         let triedonline = false
         try {
           responseData = await this.getDataFromCache(dbproject, table, key)
-          if ((!responseData || responseData.length === 0) && !optional) {
+          if ((!responseData || responseData.length === 0)) {
             // console.log('no cached data, try to get online 1')
             responseData = []
             try {
@@ -419,6 +415,7 @@ export default {
           }
         }
         return responseData
+      }
     }
   },
   async getDataOnline (hosturl, dbproject, table, key, pageParameter) {
@@ -470,11 +467,7 @@ export default {
   },
   async getDataFromCache (dbproject, table, key) {
     let responseData = []
-    try {
-      responseData = await Navikeyidb.getDataLocally(dbproject, table, key)
-    } catch (err) {
-      throw err
-    }
+    responseData = await Navikeyidb.getDataLocally(dbproject, table, key)
     return responseData
   },
   async saveDataToCache (loadingMode, root, dbproject, table, data) {
@@ -493,11 +486,7 @@ export default {
   },
   async loadAndSaveTableDataToCache (hosturl, dbproject, table) {
     let responseData = []
-    try {
-      responseData = await this.getDataOnline(hosturl, dbproject, table, '', { page: 1, pagesize: 5000 })
-    } catch (error) {
-      throw error
-    }
+    responseData = await this.getDataOnline(hosturl, dbproject, table, '', { page: 1, pagesize: 5000 })
     if (responseData && !indexedDBError) {
       // save data to indexedbdb
       // console.log('save all data', responseData)

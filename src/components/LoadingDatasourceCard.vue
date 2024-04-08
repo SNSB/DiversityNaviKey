@@ -29,7 +29,7 @@ export default {
       return this.$store.getters.getGuiColorTheme
     },
     currentDatasource () {
-      let newDB = this.$store.getters.getDataSourceData
+      const newDB = this.$store.getters.getDataSourceData
       if (this.datasourceid !== newDB.id) {
         this.onDataSourceChangedEvent(newDB.id)
       }

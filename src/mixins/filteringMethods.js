@@ -142,7 +142,7 @@ export default {
       }
       function groupBy (descriptorObjectArray, userInputs) {
         return descriptorObjectArray.reduce(function (acc, obj) {
-          let key = obj[userInputs]
+          const key = obj[userInputs]
           if (!acc[key]) {
             acc[key] = []
           }
@@ -152,11 +152,13 @@ export default {
       }
       if (desclistItem && Array.isArray(desclistItem)) {
         // group multiple selection of numerical descriptor by user input,e.g. '=,12'
-        let grouped = groupBy(desclistItem, 'descriptorStateUserInputs')
+        const grouped = groupBy(desclistItem, 'descriptorStateUserInputs')
         const groupKeys = Object.keys(grouped)
         // search over all quantitativ states in simple search
         groupKeys.forEach((key, index) => {
-          for (let desll of grouped[key]) {
+          // Todo ariane
+          // eslint-disable-next-line
+          for (const desll of grouped[key]) {
             if (desll.descType === QUANTTYPE) {
               let tempArray = loadedDescriptorItems.filter(descStateItem => (descStateItem.CID === desll.CID))
               tempArray = deepClone(tempArray) // don't forget this one!!!
@@ -230,13 +232,13 @@ export default {
             selectedIts = []
             selectedIts.push({ ItemList: [] })
           }
-          let allItemsWithCID = new Map()
+          const allItemsWithCID = new Map()
           // add IID to Map -> iid as key, eliminates duplicates by default -> caution! only last inserted value wins -> works only for categoricals where value is not important
           // otherwise use .has to check and add new value to old one
           for (const singleItem of selectedIts[0].ItemList) {
             allItemsWithCID.set(singleItem.IID, singleItem)
           }
-          let notSetArray = []
+          const notSetArray = []
           notSetArray.push({ ItemList: [] })
           this.fileNameMap.forEach(function (value, key) {
             if (!allItemsWithCID.get(key)) {
@@ -245,9 +247,9 @@ export default {
           })
           selectedIs = deepClone(notSetArray)
         } else {
-          let selectedIts = loadedDescriptorItems.filter(descStateItem => ((descStateItem.CID === desclistItem.CID)))
-          let allItemsWithCID = new Map()
-          let mapItemsWithCS = new Map() // because of multi-state possiblity for items
+          const selectedIts = loadedDescriptorItems.filter(descStateItem => ((descStateItem.CID === desclistItem.CID)))
+          const allItemsWithCID = new Map()
+          const mapItemsWithCS = new Map() // because of multi-state possiblity for items
           for (const preIis of selectedIts) {
             let mapWithCS = false
             if (preIis.CS === desclistItem.CS) {
@@ -265,7 +267,7 @@ export default {
           mapItemsWithCS.forEach(function (value, key) {
             allItemsWithCID.delete(key)
           })
-          let tempItemArray = []
+          const tempItemArray = []
           tempItemArray.push({ ItemList: [] })
           tempItemArray[0].ItemList = Array.from(allItemsWithCID.values())
           selectedIs = deepClone(tempItemArray)
@@ -285,7 +287,7 @@ export default {
             unsetItems = []
             unsetItems.push({ ItemList: [] })
           }
-          let allItemsWithCID = new Map()
+          const allItemsWithCID = new Map()
           for (const preUnset of unsetItems) {
             // add IID to Map -> iid as key, eliminates duplicates by default -> caution! only last inserted value wins -> works only for categoricals where value is not important
             // otherwise use .has to check and add new value to old one
@@ -293,7 +295,7 @@ export default {
               allItemsWithCID.set(singleItem.IID, singleItem)
             }
           }
-          let notSetArray = []
+          const notSetArray = []
           notSetArray.push({ ItemList: [] })
           this.fileNameMap.forEach(function (value, key) {
             if (!allItemsWithCID.get(key)) {
@@ -350,7 +352,7 @@ export default {
           cunjSel = currentSelectedItemsList.filter(item => (selectedIs[0].ItemList.find(item2 => item2.IID === item.IID)))
         } else {
           setCun = true
-          let itemsToTest = (selectedIs[0].ItemList.filter(item2 => this.compareValues(item2, desclistItem))).filter((item2, index, self) => self.findIndex(t => t.IID === item2.IID) === index)
+          const itemsToTest = (selectedIs[0].ItemList.filter(item2 => this.compareValues(item2, desclistItem))).filter((item2, index, self) => self.findIndex(t => t.IID === item2.IID) === index)
           // remove duplicates of search before
           cunjSel = currentSelectedItemsList.filter(item3 => (itemsToTest.find(itemC => itemC.IID === item3.IID)))
         }
@@ -401,7 +403,7 @@ export default {
         if (desclistItem.descType === SELECTIONTYPE) {
           disjSel = selectedIs[0].ItemList.filter(item => !(currentSelectedItemsList.find(item2 => item2.IID === item.IID)))
         } else {
-          let itemsToTest = (selectedIs[0].ItemList.filter(item2 => this.compareValues(item2, desclistItem))).filter((item2, index, self) => self.findIndex(t => t.IID === item2.IID) === index)
+          const itemsToTest = (selectedIs[0].ItemList.filter(item2 => this.compareValues(item2, desclistItem))).filter((item2, index, self) => self.findIndex(t => t.IID === item2.IID) === index)
           // remove already included
           disjSel = itemsToTest.filter(item3 => !(currentSelectedItemsList.find(itemC => itemC.IID === item3.IID)))
         }
@@ -441,8 +443,8 @@ export default {
      */
     numericalRangeFilter (selectedIs, desclistItem, alreadySelectedItemsList, operator) {
       let disjSel = []
-      let inclExtrem = this.numFilterIncludeExtremValues
-      let itemMap = new Map()
+      const inclExtrem = this.numFilterIncludeExtremValues
+      const itemMap = new Map()
       let lc = 0
       if (alreadySelectedItemsList) {
         lc = alreadySelectedItemsList.length
@@ -452,11 +454,11 @@ export default {
       }
       // map all num descriptors + values (MIN, LOW, MEAN; UPP; MAX) to IID
       if (selectedIs.length > 0) {
-        for (let desc of selectedIs) {
+        for (const desc of selectedIs) {
           if (desc.ItemList && desc.ItemList.length > 0) {
-            for (let item of desc.ItemList) {
+            for (const item of desc.ItemList) {
               if (itemMap.has(item.IID)) {
-                let addToItem = itemMap.get(item.IID)
+                const addToItem = itemMap.get(item.IID)
                 addToItem.values.push({ CID: desc.CID, CS: desc.CS, Value: item.Value })
               } else {
                 itemMap.set(item.IID, { values: [{ CID: desc.CID, CS: desc.CS, Value: item.Value }] })
@@ -465,8 +467,8 @@ export default {
           }
         }
         // filter with quantitative range logic
-        var objDT = new QuantitativeRangeDescriptorDataType()
-        let userValues = [desclistItem.descriptorStateUserInputs[1], desclistItem.descriptorStateUserInputs[2]]
+        const objDT = new QuantitativeRangeDescriptorDataType()
+        const userValues = [desclistItem.descriptorStateUserInputs[1], desclistItem.descriptorStateUserInputs[2]]
         disjSel = objDT.getNumMatches(itemMap, desclistItem.descriptorStateUserInputs[0], userValues, inclExtrem)
         if (lc > 0) {
           // remove already included
@@ -554,12 +556,12 @@ export default {
      * @param {*} desclistItem desclistItem.descriptorStateUserInputs[0] -> comparator, [1] searchstring
      */
     checkTextSearch (item, desclistItem) {
-      let itemTextValue = item.Value // CHANGE API X OR TextVALUE OR VALUE HERE!!   item.TxtValue oder item.TXT
+      const itemTextValue = item.Value // CHANGE API X OR TextVALUE OR VALUE HERE!!   item.TxtValue oder item.TXT
       let match = false
       if (itemTextValue) {
         // for text descriptors there are always 2 values in descriptorStateUserInput -> first argument should always be true contains comparator 'contains', 'exact'
         if (desclistItem.descriptorStateUserInputs.length === 2) {
-          let searchText = String(desclistItem.descriptorStateUserInputs[1])
+          const searchText = String(desclistItem.descriptorStateUserInputs[1])
           // exact macth of text -> currently not in use -> not sure that this makes sense
           if (desclistItem.descriptorStateUserInputs[0] === 'exact') {
             if (itemTextValue.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
@@ -582,19 +584,20 @@ export default {
      */
     getFilteredNames (stringPartToSearch) {
       let allNames = this.fileNameLists
-      let matchedNames = []
-      let matchedMap = new Map()
+      const matchedNames = []
+      const matchedMap = new Map()
       if (allNames && allNames.length > 0) {
         allNames.filter(nn => {
           if (nn.ItemName.toLowerCase().indexOf(stringPartToSearch.toLowerCase()) > -1) {
             matchedNames.push({ IID: nn.IID, ItemName: nn.ItemName })
             matchedMap.set(nn.IID, nn)
           }
+          return false // TODO ariane check if return false is correct here
         })
         // check scopes here
         allNames.filter(nn => {
           if (nn.scopeTaxonInfo && nn.scopeTaxonInfo.length > 0) {
-            for (let name of nn.scopeTaxonInfo) {
+            for (const name of nn.scopeTaxonInfo) {
               if (name.acceptedName) {
                 if (name.acceptedName.toLowerCase().indexOf(stringPartToSearch.toLowerCase()) > -1) {
                   if (!matchedMap.has(nn.IID)) {
@@ -605,6 +608,7 @@ export default {
               }
             }
           }
+          return false // TODO ariane check if return false is correct here
         })
       }
       allNames = null

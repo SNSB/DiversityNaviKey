@@ -116,8 +116,8 @@
 import { mapGetters } from 'vuex'
 import SearchSwitcher from './SearchSwitcher.vue'
 import DataSourceInformationDialog from './DataSourceInformationDialog'
-import LoginDialogForm from '../views/Login.vue'
-import LogoutDialogForm from '../views/Logout.vue'
+import LoginDialogForm from '../views/LoginDivNaviKey.vue'
+import LogoutDialogForm from '../views/LogoutDivNaviKey.vue'
 
 export default {
   name: 'NaviToolbar',
@@ -164,9 +164,9 @@ export default {
       return this.getNumberOfMatches(isDescriptorMode)
     },
     datasource () {
-      let current = this.$store.getters.getDataSourceData
+      const current = this.$store.getters.getDataSourceData
       if (current) {
-        let masterInfo = this.$store.getters.getMasterDataSourceInfo(current)
+        const masterInfo = this.$store.getters.getMasterDataSourceInfo(current)
         if (masterInfo) {
           return masterInfo.projectTitle
         }

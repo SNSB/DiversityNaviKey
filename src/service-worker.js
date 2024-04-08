@@ -1,12 +1,8 @@
+import { precacheAndRoute } from 'workbox-precaching'
+// eslint-disable-next-line
 importScripts('./my-env-vars.js')
-
-self.__precacheManifest = [].concat(self.__precacheManifest || [])
-
-workbox.setConfig({
-  debug: false
-})
-
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {})
+// self.__precacheManifest = [].concat(self.__precacheManifest || [])
+precacheAndRoute(self.__WB_MANIFEST, {})
 
 self.addEventListener('install', function () {
   console.log('ServiceWorker: install event in progress')
@@ -26,7 +22,6 @@ self.addEventListener('message', function (event) {
     self.skipWaiting()
   }
 })
-
 
 // push notifications
 // self.addEventListener("push", function(event) {

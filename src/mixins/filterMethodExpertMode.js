@@ -43,20 +43,20 @@ export default {
       if (searchString && searchString.length === 0) {
         return []
       }
-      let selectedItems = [] // triple of callStepNumber, andOrOperator, selectedItems
+      const selectedItems = [] // triple of callStepNumber, andOrOperator, selectedItems
       let callStep = 0
-      let numberType = QUANTTYPE
-      let selectionType = SELECTIONTYPE
-      let textType = TEXTTYPE
+      const numberType = QUANTTYPE
+      const selectionType = SELECTIONTYPE
+      const textType = TEXTTYPE
       // all items in descriptor-state lists sorted by their descriptor type
-      let loadedCategoricalDescriptorItems = this.loadedCategoricalDescriptorItems
-      let loadedNumericalDescriptorItems = this.loadedNumericalDescriptorItems
-      let loadedTextDescriptorItems = this.loadedTextDescriptorItems
-      let loadedNumFilterIncludeExtremValues = this.numFilterIncludeExtremValues
+      const loadedCategoricalDescriptorItems = this.loadedCategoricalDescriptorItems
+      const loadedNumericalDescriptorItems = this.loadedNumericalDescriptorItems
+      const loadedTextDescriptorItems = this.loadedTextDescriptorItems
+      const loadedNumFilterIncludeExtremValues = this.numFilterIncludeExtremValues
       // all itemnames in a map
-      let itemNameMap = this.itemNamesMap
-      let isPositiveToleranceMode = this.isPositiveToleranceMode
-      let isNegativeToleranceMode = this.isNegativeToleranceMode
+      const itemNameMap = this.itemNamesMap
+      const isPositiveToleranceMode = this.isPositiveToleranceMode
+      const isNegativeToleranceMode = this.isNegativeToleranceMode
       const deepClone = require('rfdc')()
       // call recursive function with whole searchString
       decrumbleSearchString(searchString)
@@ -135,12 +135,12 @@ export default {
         if (!item || !item.Value) {
           return false
         }
-        let itemTextValue = item.Value // CHANGE API X OR TextVALUE OR VALUE HERE!!   item.TxtValue oder item.TXT
+        const itemTextValue = item.Value // CHANGE API X OR TextVALUE OR VALUE HERE!!   item.TxtValue oder item.TXT
         let match = false
         if (itemTextValue) {
           // for text descriptors there are always 2 values in descriptorStateUserInput -> first argument should always be true contains comparator 'contains', 'exact'
           if (desclistItem.descriptorStateUserInputs.length === 2) {
-            let searchText = String(desclistItem.descriptorStateUserInputs[1])
+            const searchText = String(desclistItem.descriptorStateUserInputs[1])
             // exact macth of text -> currently not in use -> sense?
             if (desclistItem.descriptorStateUserInputs[0] === 'exact') {
               if (itemTextValue.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
@@ -174,7 +174,7 @@ export default {
           if (desclistItem.descType === selectionType || desclistItem.descType === numberType) {
             cunjSel = currentSelectedItemsList[0].ItemList.filter(item => (selectedIs[0].ItemList.find(item2 => item2.IID === item.IID)))
           } else {
-            let itemsToTest = (selectedIs[0].ItemList.filter(item2 => compareValues(item2, desclistItem))).filter((item2, index, self) => self.findIndex(t => t.IID === item2.IID) === index)
+            const itemsToTest = (selectedIs[0].ItemList.filter(item2 => compareValues(item2, desclistItem))).filter((item2, index, self) => self.findIndex(t => t.IID === item2.IID) === index)
             // remove duplicates of search before
             cunjSel = currentSelectedItemsList[0].ItemList.filter(item3 => (itemsToTest.find(itemC => itemC.IID === item3.IID)))
           }
@@ -192,8 +192,8 @@ export default {
       }
       function numericalRangeFilter (selectedIs, desclistItem, alreadySelectedItemsList, operator) {
         let disjSel = []
-        let inclExtrem = loadedNumFilterIncludeExtremValues
-        let itemMap = new Map()
+        const inclExtrem = loadedNumFilterIncludeExtremValues
+        const itemMap = new Map()
         let lc = 0
         if (alreadySelectedItemsList) {
           lc = alreadySelectedItemsList.length
@@ -203,11 +203,11 @@ export default {
         }
         // map all num descriptors + values (MIN, LOW, MEAN; UPP; MAX) to IID
         if (selectedIs.length > 0) {
-          for (let desc of selectedIs) {
+          for (const desc of selectedIs) {
             if (desc.ItemList && desc.ItemList.length > 0) {
-              for (let item of desc.ItemList) {
+              for (const item of desc.ItemList) {
                 if (itemMap.has(item.IID)) {
-                  let addToItem = itemMap.get(item.IID)
+                  const addToItem = itemMap.get(item.IID)
                   addToItem.values.push({ CID: desc.CID, CS: desc.CS, Value: item.Value })
                 } else {
                   itemMap.set(item.IID, { values: [{ CID: desc.CID, CS: desc.CS, Value: item.Value }] })
@@ -216,8 +216,8 @@ export default {
             }
           }
           // filter with quantitative range logic
-          var objDT = new QuantitativeRangeDescriptorDataType()
-          let userValues = [desclistItem.descriptorStateUserInputs[1], desclistItem.descriptorStateUserInputs[2]]
+          const objDT = new QuantitativeRangeDescriptorDataType()
+          const userValues = [desclistItem.descriptorStateUserInputs[1], desclistItem.descriptorStateUserInputs[2]]
           disjSel = objDT.getNumMatches(itemMap, desclistItem.descriptorStateUserInputs[0], userValues, inclExtrem)
           if (lc > 0) {
             // remove already included
@@ -276,7 +276,7 @@ export default {
           if (desclistItem.descType === selectionType || desclistItem.descType === numberType) {
             disjSel = selectedIs[0].ItemList.filter(item => !(currentSelectedItemsList[0].ItemList.find(item2 => item2.IID === item.IID)))
           } else {
-            let itemsToTest = (selectedIs[0].ItemList.filter(item2 => compareValues(item2, desclistItem))).filter((item2, index, self) => self.findIndex(t => t.IID === item2.IID) === index)
+            const itemsToTest = (selectedIs[0].ItemList.filter(item2 => compareValues(item2, desclistItem))).filter((item2, index, self) => self.findIndex(t => t.IID === item2.IID) === index)
             // remove already included
             disjSel = itemsToTest.filter(item3 => !(currentSelectedItemsList[0].ItemList.find(itemC => itemC.IID === item3.IID)))
           }
@@ -325,7 +325,7 @@ export default {
           }
           // if searchStringpart at current position is of length 2 -> filter
           if (Array.isArray(searchStringPart[i]) && searchStringPart[i].length === 2) {
-            let descriptorStatePair = searchStringPart[i][0]
+            const descriptorStatePair = searchStringPart[i][0]
             const descriptorStateOperator = searchStringPart[i][1] // categorical -> = or != , numerical one of =, !=. <=, >=, between
             if (descriptorStatePair) {
               let loadedDescriptorItems = []
@@ -351,14 +351,14 @@ export default {
                     selectedIts.push({ ItemList: [] })
                   }
                   selectedIts = deepClone(selectedIts)
-                  let allItemsWithCID = new Map()
+                  const allItemsWithCID = new Map()
                   // add IID to Map -> iid as key, eliminates duplicates by default -> caution! only last inserted value wins -> works only for categoricals where value is not important
                   // otherwise we have to use .has to check and add new value to old one
                   for (const singleItem of selectedIts[0].ItemList) {
                     allItemsWithCID.set(singleItem.IID, singleItem)
                   }
                   // get all Items which are not in selectedIus
-                  let notSetArray = []
+                  const notSetArray = []
                   notSetArray.push({ ItemList: [] })
                   itemNameMap.forEach(function (value, key) {
                     if (!allItemsWithCID.get(key)) {
@@ -370,8 +370,8 @@ export default {
                   console.log('in negative search NO Tolerance for categoricals')
                   selectedIts = loadedDescriptorItems.filter(descStateItem => ((descStateItem.CID === descriptorStatePair.CID)))
                   selectedIts = deepClone(selectedIts)
-                  let allItemsWithCID = new Map()
-                  let mapItemsWithCS = new Map() // because of multi-state possiblity for items
+                  const allItemsWithCID = new Map()
+                  const mapItemsWithCS = new Map() // because of multi-state possiblity for items
                   for (const preIis of selectedIts) {
                     let mapWithCS = false
                     if (preIis.CS === descriptorStatePair.CS) {
@@ -389,7 +389,7 @@ export default {
                   mapItemsWithCS.forEach(function (value, key) {
                     allItemsWithCID.delete(key)
                   })
-                  let tempItemArray = []
+                  const tempItemArray = []
                   tempItemArray.push({ ItemList: [] })
                   tempItemArray[0].ItemList = Array.from(allItemsWithCID.values())
                   cloneSelected = deepClone(tempItemArray)
@@ -412,7 +412,7 @@ export default {
                     unsetItems.push({ ItemList: [] })
                   }
                   unsetItems = deepClone(unsetItems)
-                  let allItemsWithCID = new Map()
+                  const allItemsWithCID = new Map()
                   for (const preUnset of unsetItems) {
                     // add IID to Map -> iid as key, eliminates duplicates by default -> caution! only last inserted value wins -> works only for categoricals where value is not important
                     // otherwise we have to use .has to check and add new value to old one
@@ -420,7 +420,7 @@ export default {
                       allItemsWithCID.set(singleItem.IID, singleItem)
                     }
                   }
-                  let notSetArray = []
+                  const notSetArray = []
                   notSetArray.push({ ItemList: [] })
                   itemNameMap.forEach(function (value, key) {
                     if (!allItemsWithCID.get(key)) {
@@ -479,8 +479,8 @@ export default {
                           selI.preSelectedItems = []
                           // no new items
                         } else {
-                          let pres = selI.preSelectedItems ? selI.preSelectedItems : []
-                          let preSelectedIs = logicalAndSearch(cloneSelected, descriptorStatePair, pres)
+                          const pres = selI.preSelectedItems ? selI.preSelectedItems : []
+                          const preSelectedIs = logicalAndSearch(cloneSelected, descriptorStatePair, pres)
                           if (selI.preSelectedItems.length > 0) {
                             selI.preSelectedItems[0].ItemList = preSelectedIs
                           } else {
@@ -503,7 +503,7 @@ export default {
                           if (selI.preSelectedItems) {
                             pres = selI.preSelectedItems
                           }
-                          let preSelectedIs = logicalOrSearch(cloneSelected, descriptorStatePair, pres)
+                          const preSelectedIs = logicalOrSearch(cloneSelected, descriptorStatePair, pres)
                           if (selI.preSelectedItems.length > 0) {
                             selI.preSelectedItems[0].ItemList = preSelectedIs
                           } else {
@@ -521,17 +521,17 @@ export default {
                 }
                 if (addNew) {
                   // ao callstep is not current callstep -> we load all items and filter and push to selectedItems[callSTep]
-                  let localCallStep = callStep
+                  const localCallStep = callStep
                   // // only one item added
                   if (!cloneSelected || !cloneSelected[0] || !cloneSelected[0].ItemList.length > 0) {
-                    selectedItems.push({ 'callStep': localCallStep, 'preSelectedItems': [], 'logicalOperator': null })
+                    selectedItems.push({ callStep: localCallStep, preSelectedItems: [], logicalOperator: null })
                   } else {
                     // compare number values if descriptor type === numberType
                     // if (descriptorStatePair.descType === numberType || descriptorStatePair.descType === textType) {
                     if (descriptorStatePair.descType === textType) {
                       let selecc = []
                       for (let numin = 0; numin < cloneSelected[0].ItemList.length; numin++) {
-                        let match = compareValues(cloneSelected[0].ItemList[numin], descriptorStatePair)
+                        const match = compareValues(cloneSelected[0].ItemList[numin], descriptorStatePair)
                         if (match) {
                           selecc.push(cloneSelected[0].ItemList[numin]) // CHANGE
                         }
@@ -541,21 +541,21 @@ export default {
                       // let test = getNotSetQuantitativeValues(descriptorStatePair)
                       cloneSelected[0].ItemList = selecc
                     }
-                    selectedItems.push({ 'callStep': localCallStep, 'preSelectedItems': cloneSelected, 'logicalOperator': null })
+                    selectedItems.push({ callStep: localCallStep, preSelectedItems: cloneSelected, logicalOperator: null })
                   }
                 }
               } else {
                 // load all items and filter and push to selectedItems[callSTep]
-                let localCallStep = callStep
+                const localCallStep = callStep
                 if (!cloneSelected || !cloneSelected[0] || !cloneSelected[0].ItemList.length > 0) {
-                  selectedItems.push({ 'callStep': localCallStep, 'preSelectedItems': [], 'logicalOperator': null })
+                  selectedItems.push({ callStep: localCallStep, preSelectedItems: [], logicalOperator: null })
                 } else {
                   // compare number values if descriptor type === numberType
                   // if (descriptorStatePair.descType === numberType || descriptorStatePair.descType === textType) {
                   if (descriptorStatePair.descType === textType) {
                     let selec = []
                     for (let numind = 0; numind < cloneSelected[0].ItemList.length; numind++) {
-                      let match = compareValues(cloneSelected[0].ItemList[numind], descriptorStatePair)
+                      const match = compareValues(cloneSelected[0].ItemList[numind], descriptorStatePair)
                       if (match) {
                         selec.push(cloneSelected[0].ItemList[numind]) // CHANGE
                       }
@@ -564,7 +564,7 @@ export default {
                     selec = selec.filter((item, index, self) => self.findIndex(t => t.IID === item.IID) === index)
                     cloneSelected[0].ItemList = selec
                   }
-                  selectedItems.push({ 'callStep': localCallStep, 'preSelectedItems': cloneSelected, 'logicalOperator': null })
+                  selectedItems.push({ callStep: localCallStep, preSelectedItems: cloneSelected, logicalOperator: null })
                 }
               }
             } else {

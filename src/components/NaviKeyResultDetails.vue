@@ -182,12 +182,12 @@ export default {
     },
     itemImages () {
       if (this.$store.getters.getShowItemImagesIfAvailable) {
-        let allowedExtension = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+        const allowedExtension = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
         let valid = false
-        let itimages = []
-        let currentImages = this.getCurrentImagesFromMap('item', 0)
+        const itimages = []
+        const currentImages = this.getCurrentImagesFromMap('item', 0)
         if (currentImages && currentImages.length > 0) {
-          for (let img of currentImages) {
+          for (const img of currentImages) {
             if (img && img.URL) {
               for (const allowed of allowedExtension) {
                 if (allowed === img.Type) {
@@ -210,12 +210,12 @@ export default {
       // sort (group, g) in itemDetails.itemDescription
       if (description) {
         // console.log('descrip', description)
-        for (let group of description.itemDescription) { //  descriptorID: descriptor.id, descriptorName: descriptor.name, descriptorType: descriptor.type, descriptorAvailability: descriptor.availability, items: descriptorStates
+        for (const group of description.itemDescription) { //  descriptorID: descriptor.id, descriptorName: descriptor.name, descriptorType: descriptor.type, descriptorAvailability: descriptor.availability, items: descriptorStates
           group.descriptorStates.sort(this.compareValuesForSorting('order', 'descriptorName', 'asc', 'asc'))
-          for (let desc of group.descriptorStates) {
+          for (const desc of group.descriptorStates) {
             if (desc.descriptorType === this.numberDescriptorType) {
               // sort items to Min < Low < Mean < Upp < Max (TODO should be done in DB)
-              let sortetQuantitativStates = this.sortDefaultQuantRange(desc.items)
+              const sortetQuantitativStates = this.sortDefaultQuantRange(desc.items)
               desc.items = sortetQuantitativStates
             }
           }
@@ -224,7 +224,7 @@ export default {
       return description
     },
     taxonInfo () {
-      let taxonInfo = this.getSelectedItemScopeTaxon
+      const taxonInfo = this.getSelectedItemScopeTaxon
       if (taxonInfo && taxonInfo.acceptedName) {
         return taxonInfo
       }
@@ -269,12 +269,12 @@ export default {
     },
     sortDefaultQuantRange (quantItemArray) {
       if (quantItemArray && quantItemArray.length > 0) {
-        let newQuantItemArray = []
-        let min = quantItemArray.find(st => st.CS === 'Min')
-        let low = quantItemArray.find(st => st.CS === 'UMethLower')
-        let mean = quantItemArray.find(st => st.CS === 'Mean')
-        let upp = quantItemArray.find(st => st.CS === 'UMethUpper')
-        let max = quantItemArray.find(st => st.CS === 'Max')
+        const newQuantItemArray = []
+        const min = quantItemArray.find(st => st.CS === 'Min')
+        const low = quantItemArray.find(st => st.CS === 'UMethLower')
+        const mean = quantItemArray.find(st => st.CS === 'Mean')
+        const upp = quantItemArray.find(st => st.CS === 'UMethUpper')
+        const max = quantItemArray.find(st => st.CS === 'Max')
         if (min) {
           newQuantItemArray.push(min)
         }
@@ -292,7 +292,7 @@ export default {
         }
         if (quantItemArray.length !== newQuantItemArray.length) {
           // add all other possible quantitative CS states at the end
-          for (let otherItem of quantItemArray) {
+          for (const otherItem of quantItemArray) {
             if (!newQuantItemArray.find(testItem => testItem.CS === otherItem.CS)) {
               newQuantItemArray.push(otherItem)
             }
@@ -308,13 +308,13 @@ export default {
       const filename = value
       // get datasource license info
       let metadataInfo = null
-      let ds = this.$store.getters.getDataSourceData
+      const ds = this.$store.getters.getDataSourceData
       let licenseURI = ''
       let licenseText = ''
       let dbName = null
       if (ds) {
         dbName = ds.displayName
-        let masterInfo = this.$store.getters.getDBMasterMetadata(ds)
+        const masterInfo = this.$store.getters.getDBMasterMetadata(ds)
         if (masterInfo && masterInfo.metadata.length > 0) {
           metadataInfo = masterInfo.metadata[0]
           if (metadataInfo) {

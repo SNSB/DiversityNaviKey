@@ -216,16 +216,16 @@ export default {
         allresults = this.getAllResultNames
       }
       if (allresults && allresults.length > 0) {
-        let resultlist = allresults.map(this.mapResultList)
+        const resultlist = allresults.map(this.mapResultList)
         // get datasource info
-        let list = [{ db_name: null, db_version: null, licenseURI: null, license: null, searchparameters: null, Resultlist: resultlist }]
-        let ds = this.getDataSourceData
+        const list = [{ db_name: null, db_version: null, licenseURI: null, license: null, searchparameters: null, Resultlist: resultlist }]
+        const ds = this.getDataSourceData
         list[0].db_name = ds ? ds.displayName : null
         list[0].db_version = ds ? ds.ds_version : null
         // license info
         let metadataInfo = null
         if (ds) {
-          let masterInfo = this.$store.getters.getDBMasterMetadata(ds)
+          const masterInfo = this.$store.getters.getDBMasterMetadata(ds)
           if (masterInfo && masterInfo.metadata.length > 0) {
             metadataInfo = masterInfo.metadata[0]
             if (metadataInfo) {
@@ -236,19 +236,19 @@ export default {
         }
         // get searchstring
         if (!this.getExpertViewMode) {
-          let simplesearch = this.getUserSearchString.map(searchparam => ({
+          const simplesearch = this.getUserSearchString.map(searchparam => ({
             parameter: searchparam.descName + '' + searchparam.name
           }))
-          let operators = this.getUserSelectedOperator
+          const operators = this.getUserSelectedOperator
           if (operators && operators.length === 2) {
-            let operatorsDiff = operators[0]
-            let operatorsSame = operators[1]
-            let params = [ { operatorDifferentDescriptor: operatorsDiff, operatorIdenticalDescriptor: operatorsSame, parameters: simplesearch } ]
+            const operatorsDiff = operators[0]
+            const operatorsSame = operators[1]
+            const params = [{ operatorDifferentDescriptor: operatorsDiff, operatorIdenticalDescriptor: operatorsSame, parameters: simplesearch }]
             list[0].searchparameters = params
           }
         } else {
-          let extendessearch = this.getUserSearchStringExtendedSearch.text
-          let txt = extendessearch.replace(/<(.|\n)*?>/g, '')
+          const extendessearch = this.getUserSearchStringExtendedSearch.text
+          const txt = extendessearch.replace(/<(.|\n)*?>/g, '')
           list[0].searchparameters = txt
         }
         const data = JSON.stringify(list)

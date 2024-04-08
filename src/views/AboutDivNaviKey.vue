@@ -28,7 +28,7 @@
 </template>
 <script>
 export default {
-  name: 'About',
+  name: 'AboutDivNaviKey',
   components: {
   },
   data: () => ({

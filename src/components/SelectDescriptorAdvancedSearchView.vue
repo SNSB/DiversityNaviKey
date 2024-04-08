@@ -339,11 +339,11 @@ export default {
         // set images if available
         let tryAvailableImages = false
         if (this.$store.getters.getShowDescriptorStateImagesIfAvailable) {
-          for (let desc of descriptors) {
+          for (const desc of descriptors) {
             if (desc.images && desc.images.length > 0) {
               this.setDescriptorImagesAvailable(true)
               tryAvailableImages = true
-              let toShow = desc.images.filter(ima => ima.Order === 1)
+              const toShow = desc.images.filter(ima => ima.Order === 1)
               if (toShow && toShow.length > 0) {
                 // console.log('toShow', toShow)
                 desc.ImageToShow = toShow[0].URL
@@ -439,7 +439,7 @@ export default {
       this.selectedDescriptor = null
       // this.quantitativeStatesLower = []
       // clear search result and pass to vuex
-      this.$store.dispatch('passSelectedItems', { 'filteredItems': [], 'resetResult': true })
+      this.$store.dispatch('passSelectedItems', { filteredItems: [], resetResult: true })
       this.$store.dispatch('passSearchstringExtendedSearch', [])
       this.$store.dispatch('passCurrentUserSelectedDescriptor', null)
       this.$store.dispatch('passUserSelectedDescriptors', [])
@@ -452,23 +452,23 @@ export default {
      * Transfer searchstring items to the format used in filterMethodExpertMode
      */
     createSearchStringToPass () {
-      let partToAdd = []
+      const partToAdd = []
       const valueType = this.searchStringGroupItemTypeValues
       const arrayValueType = this.searchStringGroupItemTypeArrayValues
       const groupItemsType = this.searchStringGroupItemTypeGroupItems
-      let searchStrGroupItems = this.searchstring.items // overall parent
+      const searchStrGroupItems = this.searchstring.items // overall parent
       if (searchStrGroupItems.type === this.searchStringGroupItemTypeValues) {
         // groupValues.length has to be 1 and no operator
         partToAdd.push([searchStrGroupItems.groupValues[0], searchStrGroupItems.groupValues[0].descriptorStateUserInputs[0]])
         return partToAdd
       }
       if (searchStrGroupItems.type === this.searchStringGroupItemTypeArrayValues) {
-        let newPart = []
+        const newPart = []
         for (let ind = 0; ind < searchStrGroupItems.groupValues.length; ind++) {
           if (ind === 0) {
             newPart.push([searchStrGroupItems.groupValues[ind].groupValues, searchStrGroupItems.groupValues[ind].groupValues.descriptorStateUserInputs[0]])
           } else {
-            let currentOp = searchStrGroupItems.operator
+            const currentOp = searchStrGroupItems.operator
             newPart.push(currentOp)
             newPart.push([searchStrGroupItems.groupValues[ind].groupValues, searchStrGroupItems.groupValues[ind].groupValues.descriptorStateUserInputs[0]])
           }
@@ -477,13 +477,13 @@ export default {
         return partToAdd
       }
       if (searchStrGroupItems.type === this.searchStringGroupItemTypeGroupItems) {
-        let currentOp = searchStrGroupItems.operator
-        let tempPart = recursiveGroup(searchStrGroupItems.groupValues, currentOp)
+        const currentOp = searchStrGroupItems.operator
+        const tempPart = recursiveGroup(searchStrGroupItems.groupValues, currentOp)
         return tempPart
       }
       // inner function called recursively
       function recursiveGroup (groupValues, groupOperator) {
-        let returnPart = []
+        const returnPart = []
         for (let groupOfGroupIndex = 0; groupOfGroupIndex < groupValues.length; groupOfGroupIndex++) {
           if (groupValues[groupOfGroupIndex].type === valueType) {
             if (groupOfGroupIndex > 0) {
@@ -492,7 +492,7 @@ export default {
             returnPart.push([groupValues[groupOfGroupIndex].groupValues[0], groupValues[groupOfGroupIndex].groupValues[0].descriptorStateUserInputs[0]])
           }
           if (groupValues[groupOfGroupIndex].type === arrayValueType) {
-            let newPart = []
+            const newPart = []
             if (groupOfGroupIndex > 0) {
               returnPart.push(groupOperator)
             }
@@ -500,7 +500,7 @@ export default {
               if (ind === 0) {
                 newPart.push([groupValues[groupOfGroupIndex].groupValues[ind].groupValues, groupValues[groupOfGroupIndex].groupValues[ind].groupValues.descriptorStateUserInputs[0]])
               } else {
-                let currentOp = groupValues[groupOfGroupIndex].operator
+                const currentOp = groupValues[groupOfGroupIndex].operator
                 newPart.push(currentOp)
                 newPart.push([groupValues[groupOfGroupIndex].groupValues[ind].groupValues, groupValues[groupOfGroupIndex].groupValues[ind].groupValues.descriptorStateUserInputs[0]])
               }
@@ -511,8 +511,8 @@ export default {
             if (groupOfGroupIndex > 0) {
               returnPart.push(groupOperator)
             }
-            let recursiveOperator = groupValues[groupOfGroupIndex].operator
-            let tempPart = recursiveGroup(groupValues[groupOfGroupIndex].groupValues, recursiveOperator)
+            const recursiveOperator = groupValues[groupOfGroupIndex].operator
+            const tempPart = recursiveGroup(groupValues[groupOfGroupIndex].groupValues, recursiveOperator)
             returnPart.push(tempPart)
           }
         }
@@ -526,28 +526,27 @@ export default {
     onStartSearchClick () {
       if (this.searchstring && this.searchstring.items) {
         // init filtermethod
-        let categoricals = this.$store.getters.mappedDescStateItems
-        let quantiative = this.$store.getters.mappedNumericalDescStateItems
-        let text = this.$store.getters.mappedTextDescStateItems
+        const categoricals = this.$store.getters.mappedDescStateItems
+        const quantiative = this.$store.getters.mappedNumericalDescStateItems
+        const text = this.$store.getters.mappedTextDescStateItems
         let itemNameMap = null
-        let negCategoricalToleranceMode = this.$store.getters.getIsCategoricalToleranceMode
-        let posCategoricalToleranceMode = this.$store.getters.getIsPositiveCategoricalToleranceMode
+        const negCategoricalToleranceMode = this.$store.getters.getIsCategoricalToleranceMode
+        const posCategoricalToleranceMode = this.$store.getters.getIsPositiveCategoricalToleranceMode
         negCategoricalToleranceMode || posCategoricalToleranceMode ? itemNameMap = this.$store.getters.getItemIDNameMap : itemNameMap = null
         this.initToleranceModesAdvancedMode(negCategoricalToleranceMode, posCategoricalToleranceMode)
         this.initNameMapAdvancedMode(itemNameMap)
         this.initInvertedFiltersAdvancedMode(categoricals, quantiative, text)
-        let includeExtremeValues = this.$store.getters.getNumFilterIncludeExtremeValues
+        const includeExtremeValues = this.$store.getters.getNumFilterIncludeExtremeValues
         this.initNumFilterIncludeExtremeValues(includeExtremeValues)
-        let searchStringToPass = this.createSearchStringToPass()
+        const searchStringToPass = this.createSearchStringToPass()
         // pass to vuex
         this.$store.dispatch('passSearchstringExtendedSearch', this.searchstring)
         let filteredItems = this.getFilteredItemsAdvancedMode(searchStringToPass)
-        if (filteredItems) {
-        } else {
+        if (!filteredItems) {
           filteredItems = []
         }
         // pass all items after filtering to vuex
-        this.$store.dispatch('passSelectedItems', { 'filteredItems': filteredItems, 'resetResult': false })
+        this.$store.dispatch('passSelectedItems', { filteredItems: filteredItems, resetResult: false })
       }
       this.disableCheckbox = false
       this.disableSelectAsSearch = false
@@ -556,7 +555,7 @@ export default {
     // TODO
     async loadSimpleSearchCriteria () {
       // get selectedItems from store
-      let selectedItems = this.$store.getters.getUserSearchString
+      const selectedItems = this.$store.getters.getUserSearchString
       if (selectedItems.length > 1) {
         this.disableItemCheckbox = false
         this.loadSimple = true
@@ -599,7 +598,7 @@ export default {
     },
     async onListItemDeleteClick (params) {
       let filteredSelectedItems = []
-      let selectedItems = this.$store.getters.getUserSearchString
+      const selectedItems = this.$store.getters.getUserSearchString
       if (params && params.descType === this.numberDescriptorType) {
         // delete all states (min, max, lower,..) of the descriptor
         filteredSelectedItems = selectedItems.filter(it => !(it.CID === params.CID && (it.descriptorStateUserInputs[0] === params.descriptorStateUserInputs[0] && it.descriptorStateUserInputs[1] === params.descriptorStateUserInputs[1])))
@@ -620,11 +619,11 @@ export default {
       this.onOKSelectionClick()
     },
     onListItemEditClick (params) {
-      let selectedItems = this.$store.getters.getUserSearchString
+      const selectedItems = this.$store.getters.getUserSearchString
       if (selectedItems && selectedItems.length > 0) {
         for (const itemToEdit of selectedItems) {
           if (itemToEdit.stateID === params.stateID && itemToEdit.selectionId === params.selectionId) {
-            let editDescriptor = this.$store.getters.getDescriptorByID(itemToEdit.CID)
+            const editDescriptor = this.$store.getters.getDescriptorByID(itemToEdit.CID)
             // reset old search
             // reset old search
             this.editItem = itemToEdit
@@ -634,7 +633,7 @@ export default {
       }
     },
     onGroupItemDeleteClick (groupItem) {
-      let filteredGroupItems = []
+      const filteredGroupItems = []
       for (const groupToFilter of this.listOfGroups) {
         if (groupToFilter.groupKey !== groupItem.groupKey) {
           filteredGroupItems.push(groupToFilter)
@@ -668,11 +667,11 @@ export default {
         console.log('No File selected')
         return
       }
-      let filename = this.searchCriteriaFile.name
+      const filename = this.searchCriteriaFile.name
       if (filename.lastIndexOf('.') <= 0) { // no fileextension
         console.log('no supported file')
       } else {
-        let fileExtension = filename.split('.').pop()
+        const fileExtension = filename.split('.').pop()
         if (fileExtension !== 'json') {
           this.errorMessage = this.$t('selectDescriptorAdvancedSearchView.NotSupportedFileFormat')
           this.loadClicked = false
@@ -682,7 +681,7 @@ export default {
       const fileReader = new FileReader()
       fileReader.addEventListener('load', e => {
         try {
-          let tempSearchCriteria = JSON.parse(fileReader.result)
+          const tempSearchCriteria = JSON.parse(fileReader.result)
           if ((Array.isArray(tempSearchCriteria) && tempSearchCriteria[0].Resultlist) || (tempSearchCriteria.type === process.env.VUE_APP_RESULT_DETAILS_FILETYPE)) {
             this.errorMessage = this.$t('selectDescriptorView.fileUploadIncorrectFileType')
             this.loadClicked = false
@@ -731,16 +730,16 @@ export default {
       const arrayValueType = this.searchStringGroupItemTypeArrayValues
       const groupItemsType = this.searchStringGroupItemTypeGroupItems
       if (tempSearchCriteria && tempSearchCriteria.items) {
-        let parentGroup = tempSearchCriteria.items
-        let listOf = []
-        let testDecrumble = recursiveDecrumble(parentGroup, listOf)
+        const parentGroup = tempSearchCriteria.items
+        const listOf = []
+        const testDecrumble = recursiveDecrumble(parentGroup, listOf)
         if (testDecrumble || listOf.length > 0) {
           this.listOfGroups = listOf
           this.searchKey = startKey + 1
         }
       }
       function recursiveDecrumble (pGroup, listOf) {
-        let filteredList = listOf.filter(pp => pp.groupKey === pGroup.groupKey)
+        const filteredList = listOf.filter(pp => pp.groupKey === pGroup.groupKey)
         if (filteredList.length > 0) {
           // already in list
           return false
@@ -770,12 +769,12 @@ export default {
       const filename = value
       if (this.searchstring.items) {
         // get datasource info
-        let ds = this.getDataSourceData
+        const ds = this.getDataSourceData
         let licenseURI = ''
         let licenseText = ''
         let metadataInfo = null
         if (ds) {
-          let masterInfo = this.$store.getters.getDBMasterMetadata(ds)
+          const masterInfo = this.$store.getters.getDBMasterMetadata(ds)
           if (masterInfo && masterInfo.metadata.length > 0) {
             metadataInfo = masterInfo.metadata[0]
             if (metadataInfo) {
@@ -820,7 +819,7 @@ export default {
       let newSearchStringPart = ' '
       const deepClone = require('rfdc')()
       // only one item has been selected nothing else
-      let selectedItems = this.$store.getters.getUserSearchString
+      const selectedItems = this.$store.getters.getUserSearchString
       if (selectedItems && selectedItems.length === 1) { //  && this.opItemCheckbox === '') {
         // deep cloning! otherwise same descriptor/state pair with different values lead to same values
         currentSelected = deepClone(selectedItems[0])
@@ -846,9 +845,9 @@ export default {
         if (currentSelected.descType === this.textDescriptorType) {
           newSearchStringPart += '<em>' + currentSelected.descName + '</em><b>' + currentSelected.descriptorStateUserInputs[0] + '</b> ' + currentSelected.descriptorStateUserInputs[1] + '<wbr>'
         }
-        let groupValueArray = []
+        const groupValueArray = []
         groupValueArray.push(currentSelected)
-        let groupItem = { groupKey: this.searchKey, operator: currentOperator, groupValues: groupValueArray, text: newSearchStringPart, type: this.searchStringGroupItemTypeValues }
+        const groupItem = { groupKey: this.searchKey, operator: currentOperator, groupValues: groupValueArray, text: newSearchStringPart, type: this.searchStringGroupItemTypeValues }
         this.listOfGroups.push(groupItem)
         this.searchKey++
         newSearchStringPart = ' '
@@ -862,19 +861,19 @@ export default {
         // more than one item has been selected and an operator -> combine is added automatically
         if (selectedItems.length > 1) {
           this.selectOperatorError = ''
-          let groupOfGroups = []
+          const groupOfGroups = []
           currentOperator = this.$store.getters.getUserSelectedOperator // this.logOperatorsGrouping
           if (!currentOperator || !Array.isArray(currentOperator) || !currentOperator.length === 2) {
             currentOperator = this.logOperatorsGrouping
           }
-          let tempArray = []
+          const tempArray = []
           for (let i = 0; i < selectedItems.length; i++) {
             let filteredDescs = []
             // filter equal descriptors
             if (!tempArray.includes(selectedItems[i].CID)) {
               filteredDescs = deepClone(selectedItems.filter(d => d.CID === selectedItems[i].CID))
               tempArray.push(selectedItems[i].CID)
-              let groupItems = []
+              const groupItems = []
               if (filteredDescs && filteredDescs.length === 1) {
                 currentSelected = deepClone(filteredDescs[0])
                 if (currentSelected.descType === this.selectionDescriptorType) {
@@ -890,9 +889,9 @@ export default {
                 if (currentSelected.descType === this.textDescriptorType) {
                   newSearchStringPart += '<em>' + currentSelected.descName + '</em><b>' + currentSelected.descriptorStateUserInputs[0] + '</b> ' + currentSelected.descriptorStateUserInputs[1] + '<wbr>'
                 }
-                let groupValueArray = []
+                const groupValueArray = []
                 groupValueArray.push(currentSelected)
-                let groupItem = { groupKey: this.searchKey, operator: currentOperator, groupValues: groupValueArray, text: newSearchStringPart, type: this.searchStringGroupItemTypeValues }
+                const groupItem = { groupKey: this.searchKey, operator: currentOperator, groupValues: groupValueArray, text: newSearchStringPart, type: this.searchStringGroupItemTypeValues }
                 groupOfGroups.push(groupItem)
                 this.searchKey++
                 newSearchStringPart = ''
@@ -923,7 +922,7 @@ export default {
                   if (d === filteredDescs.length - 1) {
                     newSearchStringPart += '<b style="background-color:#58ACFA"> ) </b>'
                   }
-                  let groupItem = { groupKey: this.searchKey, groupValues: currentSelected }
+                  const groupItem = { groupKey: this.searchKey, groupValues: currentSelected }
                   groupItems.push(groupItem)
                   this.searchKey++
                   newSearchStringPart += ' '
@@ -977,7 +976,7 @@ export default {
       // only and/or has been selected
       if (this.opCheckbox && this.opCheckbox !== '') {
         if (this.enabledGroup && this.enabledGroup.length > 0) {
-          let newGroupItems = []
+          const newGroupItems = []
           for (const indexGroup of this.enabledGroup) {
             if (indexGroup) {
               if (newGroupItems.length > 0) {
@@ -985,7 +984,7 @@ export default {
               } else {
                 newSearchStringPart += '<b style="background-color:#F78181"> ( </b>'
               }
-              let deepClonedIndexGroup = deepClone(indexGroup)
+              const deepClonedIndexGroup = deepClone(indexGroup)
               newGroupItems.push(deepClonedIndexGroup)
               // add text
               newSearchStringPart += deepClonedIndexGroup.text

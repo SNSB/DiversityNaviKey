@@ -35,10 +35,10 @@ export default {
     onStartSearchClick () {
       if (this.searchCharacters && this.searchCharacters !== '' && this.searchCharacters.length >= 3) {
         // init filtermethod
-        let fileNames = this.$store.getters.getItemIDNamesList
+        const fileNames = this.$store.getters.getItemIDNamesList
         this.initInvertedNameFilters(fileNames)
-        let filteredItems = this.getFilteredNames(this.searchCharacters)
-        this.$store.dispatch('passSelectedNames', { 'filteredNames': filteredItems, 'resetResult': false })
+        const filteredItems = this.getFilteredNames(this.searchCharacters)
+        this.$store.dispatch('passSelectedNames', { filteredNames: filteredItems, resetResult: false })
         this.$store.dispatch('passIsCurrentModeDesriptorMode', false)
       }
     },

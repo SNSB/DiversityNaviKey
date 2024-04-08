@@ -35,10 +35,10 @@
 </template>
 <script>
 import User from '../models/user'
-import RegisterUserDialogForm from '../views/RegisterUser.vue'
+import RegisterUserDialogForm from './RegisterUser.vue'
 
 export default {
-  name: 'Login',
+  name: 'LoginDivNaviKey',
   data: () => ({
     user: new User('', '', ''),
     valid: true,

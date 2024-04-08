@@ -30,8 +30,8 @@ export default {
       return this.getGuiColorTheme
     },
     checkIsCurrentModeExpert () {
-      let simpleModeDescriptor = this.isCurrentSearchDescriptorMode
-      let expertMode = this.getExpertViewMode
+      const simpleModeDescriptor = this.isCurrentSearchDescriptorMode
+      const expertMode = this.getExpertViewMode
       if (expertMode) {
         return true
       }

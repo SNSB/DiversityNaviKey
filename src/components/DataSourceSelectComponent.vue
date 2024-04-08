@@ -56,8 +56,8 @@
   </v-card>
 </template>
 <script>
-import LoginDialogForm from '../views/Login.vue'
-import LogoutDialogForm from '../views/Logout.vue'
+import LoginDialogForm from '../views/LoginDivNaviKey.vue'
+import LogoutDialogForm from '../views/LogoutDivNaviKey.vue'
 import { mapGetters } from 'vuex'
 import groupingAndSorting from '../mixins/groupingAndSortingMethods'
 
@@ -125,19 +125,19 @@ export default {
   methods: {
     onShowDescriptorStateImagesIfAvailable (value) {
       this.$store.dispatch('passShowDescriptorStateImagesIfAvailable', value)
-      let keyname = this.localStorageName + '/showDescriptorStateImagesIfAvailable'
+      const keyname = this.localStorageName + '/showDescriptorStateImagesIfAvailable'
       localStorage.setItem(keyname, value)
     },
     onShowItemImagesIfAvailable (value) {
       this.$store.dispatch('passShowItemImagesIfAvailable', value)
-      let keyname = this.localStorageName + '/showItemImagesIfAvailable'
+      const keyname = this.localStorageName + '/showItemImagesIfAvailable'
       localStorage.setItem(keyname, value)
     },
     async onChangeSource () {
-      let dbinfoMaster = this.getDataSourceInfoById(this.datasourceId)
+      const dbinfoMaster = this.getDataSourceInfoById(this.datasourceId)
       if (dbinfoMaster && dbinfoMaster.length > 0) {
         this.masterDB = dbinfoMaster[0]
-        let availableSchemes = this.getAvailabelSchemesOfMaster(dbinfoMaster[0])
+        const availableSchemes = this.getAvailabelSchemesOfMaster(dbinfoMaster[0])
         this.availableSchemes = availableSchemes.sort(this.compareValuesForSorting('scheme_lang', 'scheme_lang', 'asc', 'asc'))
       }
     },
@@ -148,7 +148,7 @@ export default {
       }
       if (this.schemeSelect === 'auto') {
         const lang = this.getCurrentLanguage
-        let testAvailalbe = this.availableSchemes.filter(scheme => scheme.scheme_lang === lang.key)
+        const testAvailalbe = this.availableSchemes.filter(scheme => scheme.scheme_lang === lang.key)
         if (testAvailalbe && testAvailalbe.length === 1) {
           this.schemeId = testAvailalbe[0]
         } else {
@@ -202,13 +202,13 @@ export default {
       this.$emit('onDatasourceSet')
     },
     setMasterDataSourceID (id) {
-      let dbinfo = this.getDataSourceInfoById(id)
+      const dbinfo = this.getDataSourceInfoById(id)
       if (dbinfo && dbinfo.length > 0) {
-        let masterInfo = this.getMasterDataSourceInfo(dbinfo[0])
+        const masterInfo = this.getMasterDataSourceInfo(dbinfo[0])
         if (masterInfo) {
           this.masterDB = masterInfo
           this.datasourceId = this.masterDB
-          let availableSchemes = this.getAvailabelSchemesOfMaster(this.masterDB)
+          const availableSchemes = this.getAvailabelSchemesOfMaster(this.masterDB)
           this.availableSchemes = availableSchemes.sort(this.compareValuesForSorting('scheme_lang', 'scheme_lang', 'asc', 'asc'))
           this.schemeId = dbinfo[0]
         }

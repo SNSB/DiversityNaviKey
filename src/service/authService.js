@@ -5,7 +5,7 @@ class AuthService {
   async login (loginUrl, user) {
     const localStorageName = process.env.VUE_APP_INDEXED_DB_NAME
     let responseData = []
-    let apiUrl = loginUrl
+    const apiUrl = loginUrl
     await Api.axiosInstance.post(apiUrl, { username: user.username, password: user.password })
       .then(async (response) => {
         // console.log('responseData', response)
@@ -22,8 +22,9 @@ class AuthService {
       })
     return responseData
   }
+
   async logout (logoutURL) {
-    let apiUrl = logoutURL
+    const apiUrl = logoutURL
     await Api.axiosInstance.post(apiUrl, {}, { headers: AuthHeader(true) })
       .then((response) => {
         const localStorageName = process.env.VUE_APP_INDEXED_DB_NAME
@@ -43,11 +44,12 @@ class AuthService {
         throw err
       })
   }
+
   async refresh (refreshUrl) {
     // console.log('refresh, ', refreshUrl)
     const localStorageName = process.env.VUE_APP_INDEXED_DB_NAME
     let responseData = []
-    let apiUrl = refreshUrl
+    const apiUrl = refreshUrl
     await Api.axiosInstance.get(apiUrl, { headers: AuthHeader(true) })
       .then(async (response) => {
         console.log('refresh responseData', response)
@@ -63,9 +65,10 @@ class AuthService {
       })
     return responseData
   }
+
   async register (registerUrl, user) {
     let responseData = []
-    let apiUrl = registerUrl
+    const apiUrl = registerUrl
     await Api.axiosInstance.post(apiUrl, { username: user.username, password: user.password, email: user.email })
       .then(async (response) => {
         console.log('responseData', response)

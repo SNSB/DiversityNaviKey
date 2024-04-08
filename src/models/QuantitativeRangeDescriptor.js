@@ -24,32 +24,32 @@ QuantitativeRangeDescriptorDataType.prototype = {
       }
     })
     function getNumMatchexExclExtremValues (key, value, userOperator, userValues, resultValues) {
-      let testOtherStates = value.values.find(state => (state.CS !== NUM_MAX && state.CS !== NUM_MEAN && state.CS !== NUM_MIN && state.CS !== NUM_UMETHLOW && state.CS !== NUM_UMETHUPP))
+      const testOtherStates = value.values.find(state => (state.CS !== NUM_MAX && state.CS !== NUM_MEAN && state.CS !== NUM_MIN && state.CS !== NUM_UMETHLOW && state.CS !== NUM_UMETHUPP))
       // console.log('test', testOtherStates)
       if (userOperator === '=') {
         let matchL = false
         let matchU = false
         if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+          const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
           if (Number(totest.Value) <= Number(userValues[0])) {
             matchL = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_MEAN)) {
-            let totest = value.values.find(state => state.CS === NUM_MEAN)
+            const totest = value.values.find(state => state.CS === NUM_MEAN)
             if (Number(totest.Value) <= Number(userValues[0])) {
               matchL = true
             }
           }
         }
         if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+          const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
           if (Number(totest.Value) >= Number(userValues[0])) {
             matchU = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_MEAN)) {
-            let totest = value.values.find(state => state.CS === NUM_MEAN)
+            const totest = value.values.find(state => state.CS === NUM_MEAN)
             if (Number(totest.Value) >= Number(userValues[0])) {
               matchU = true
             }
@@ -58,7 +58,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check exact match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) === Number(userValues[0])) {
                 matchL = true
                 matchU = true
@@ -78,19 +78,19 @@ QuantitativeRangeDescriptorDataType.prototype = {
       if (userOperator === '<=') {
         let match = false
         if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+          const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
           if (Number(totest.Value) <= Number(userValues[0])) {
             match = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_MEAN)) {
-            let totest = value.values.find(state => state.CS === NUM_MEAN)
+            const totest = value.values.find(state => state.CS === NUM_MEAN)
             if (Number(totest.Value) <= Number(userValues[0])) {
               match = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-              let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+              const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
               if (Number(totest.Value) <= Number(userValues[0])) {
                 match = true
               }
@@ -100,7 +100,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) <= Number(userValues[0])) {
                 match = true
               }
@@ -118,19 +118,19 @@ QuantitativeRangeDescriptorDataType.prototype = {
       if (userOperator === '>=') {
         let match = false
         if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+          const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
           if (Number(totest.Value) >= Number(userValues[0])) {
             match = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_MEAN)) {
-            let totest = value.values.find(state => state.CS === NUM_MEAN)
+            const totest = value.values.find(state => state.CS === NUM_MEAN)
             if (Number(totest.Value) >= Number(userValues[0])) {
               match = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-              let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+              const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
               if (Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -140,7 +140,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -158,7 +158,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
       if (userOperator === 'between') {
         let match = false
         if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+          const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
           if (Number(totest.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
             match = true
           }
@@ -167,13 +167,13 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
           if (!match) {
             if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MEAN)
+              const totest2 = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
@@ -181,7 +181,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_MEAN)) {
-          let totest = value.values.find(state => state.CS === NUM_MEAN)
+          const totest = value.values.find(state => state.CS === NUM_MEAN)
           if (Number(totest.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
             match = true
           }
@@ -190,13 +190,13 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
           if (!match) {
             if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -204,7 +204,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+          const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
           if (Number(totest.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
             match = true
           }
@@ -213,13 +213,13 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
           if (!match) {
             if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MEAN)
+              const totest2 = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -229,7 +229,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) <= Number(userValues[1]) && Number(otSt.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -248,19 +248,19 @@ QuantitativeRangeDescriptorDataType.prototype = {
         let matchU = false
         let matchL = false
         if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+          const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
           if (Number(totest.Value) < Number(userValues[0])) {
             matchU = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_MEAN)) {
-            let totest = value.values.find(state => state.CS === NUM_MEAN)
+            const totest = value.values.find(state => state.CS === NUM_MEAN)
             if (Number(totest.Value) < Number(userValues[0])) {
               matchU = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-              let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+              const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
               if (Number(totest.Value) < Number(userValues[0])) {
                 matchU = true
               }
@@ -268,19 +268,19 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+          const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
           if (Number(totest.Value) > Number(userValues[0])) {
             matchL = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_MEAN)) {
-            let totest = value.values.find(state => state.CS === NUM_MEAN)
+            const totest = value.values.find(state => state.CS === NUM_MEAN)
             if (Number(totest.Value) > Number(userValues[0])) {
               matchL = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-              let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+              const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
               if (Number(totest.Value) > Number(userValues[0])) {
                 matchL = true
               }
@@ -290,7 +290,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check exact match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) !== Number(userValues[0])) {
                 matchL = true
                 matchU = true
@@ -311,25 +311,25 @@ QuantitativeRangeDescriptorDataType.prototype = {
       return resultValues
     }
     function getNumMatchesInclExtremValues (key, value, userOperator, userValues, resultValues) {
-      let testOtherStates = value.values.find(state => (state.CS !== NUM_MAX && state.CS !== NUM_MEAN && state.CS !== NUM_MIN && state.CS !== NUM_UMETHLOW && state.CS !== NUM_UMETHUPP))
+      const testOtherStates = value.values.find(state => (state.CS !== NUM_MAX && state.CS !== NUM_MEAN && state.CS !== NUM_MIN && state.CS !== NUM_UMETHLOW && state.CS !== NUM_UMETHUPP))
       if (userOperator === '=') {
         let matchL = false
         let matchU = false
         if (value.values.find(state => state.CS === NUM_MIN)) {
-          let totest = value.values.find(state => state.CS === NUM_MIN)
+          const totest = value.values.find(state => state.CS === NUM_MIN)
           if (Number(totest.Value) <= Number(userValues[0])) {
             matchL = true
             // console.log('totest', totest)
           }
         } else {
           if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-            let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+            const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
             if (Number(totest.Value) <= Number(userValues[0])) {
               matchL = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest = value.values.find(state => state.CS === NUM_MEAN)
+              const totest = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest.Value) <= Number(userValues[0])) {
                 matchL = true
                 // console.log('totest', totest)
@@ -338,19 +338,19 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_MAX)) {
-          let totest = value.values.find(state => state.CS === NUM_MAX)
+          const totest = value.values.find(state => state.CS === NUM_MAX)
           if (Number(totest.Value) >= Number(userValues[0])) {
             matchU = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-            let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+            const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
             if (Number(totest.Value) >= Number(userValues[0])) {
               matchU = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest = value.values.find(state => state.CS === NUM_MEAN)
+              const totest = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest.Value) >= Number(userValues[0])) {
                 matchU = true
               }
@@ -360,7 +360,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check exact match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) === Number(userValues[0])) {
                 matchL = true
                 matchU = true
@@ -381,31 +381,31 @@ QuantitativeRangeDescriptorDataType.prototype = {
       if (userOperator === '<=') {
         let match = false
         if (value.values.find(state => state.CS === NUM_MIN)) {
-          let totest = value.values.find(state => state.CS === NUM_MIN)
+          const totest = value.values.find(state => state.CS === NUM_MIN)
           if (Number(totest.Value) <= Number(userValues[0])) {
             match = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-            let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+            const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
             if (Number(totest.Value) <= Number(userValues[0])) {
               match = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest = value.values.find(state => state.CS === NUM_MEAN)
+              const totest = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest.Value) <= Number(userValues[0])) {
                 match = true
               }
             } else {
               if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-                let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+                const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
                 if (Number(totest.Value) <= Number(userValues[0])) {
                   match = true
                 }
               } else {
                 if (value.values.find(state => state.CS === NUM_MAX)) {
-                  let totest = value.values.find(state => state.CS === NUM_MAX)
+                  const totest = value.values.find(state => state.CS === NUM_MAX)
                   if (Number(totest.Value) <= Number(userValues[0])) {
                     match = true
                   }
@@ -417,7 +417,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) <= Number(userValues[0])) {
                 match = true
               }
@@ -436,31 +436,31 @@ QuantitativeRangeDescriptorDataType.prototype = {
       if (userOperator === '>=') {
         let match = false
         if (value.values.find(state => state.CS === NUM_MAX)) {
-          let totest = value.values.find(state => state.CS === NUM_MAX)
+          const totest = value.values.find(state => state.CS === NUM_MAX)
           if (Number(totest.Value) >= Number(userValues[0])) {
             match = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-            let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+            const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
             if (Number(totest.Value) >= Number(userValues[0])) {
               match = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest = value.values.find(state => state.CS === NUM_MEAN)
+              const totest = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
             } else {
               if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-                let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+                const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
                 if (Number(totest.Value) >= Number(userValues[0])) {
                   match = true
                 }
               } else {
                 if (value.values.find(state => state.CS === NUM_MIN)) {
-                  let totest = value.values.find(state => state.CS === NUM_MIN)
+                  const totest = value.values.find(state => state.CS === NUM_MIN)
                   if (Number(totest.Value) >= Number(userValues[0])) {
                     match = true
                   }
@@ -472,7 +472,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -490,7 +490,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
       if (userOperator === 'between') {
         let match = false
         if (value.values.find(state => state.CS === NUM_MAX)) {
-          let totest = value.values.find(state => state.CS === NUM_MAX)
+          const totest = value.values.find(state => state.CS === NUM_MAX)
           if (Number(totest.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
             match = true
           }
@@ -499,25 +499,25 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
           if (!match) {
             if (value.values.find(state => state.CS === NUM_MIN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MIN)
+              const totest2 = value.values.find(state => state.CS === NUM_MIN)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MEAN)
+              const totest2 = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
@@ -525,7 +525,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+          const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
           if (Number(totest.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
             match = true
           }
@@ -534,19 +534,19 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
           if (!match) {
             if (value.values.find(state => state.CS === NUM_MIN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MIN)
+              const totest2 = value.values.find(state => state.CS === NUM_MIN)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MEAN)
+              const totest2 = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
@@ -554,7 +554,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_MEAN)) {
-          let totest = value.values.find(state => state.CS === NUM_MEAN)
+          const totest = value.values.find(state => state.CS === NUM_MEAN)
           if (Number(totest.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
             match = true
           }
@@ -563,25 +563,25 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
           if (!match) {
             if (value.values.find(state => state.CS === NUM_MIN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MIN)
+              const totest2 = value.values.find(state => state.CS === NUM_MIN)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
               if (Number(totest2.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_MAX)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MAX)
+              const totest2 = value.values.find(state => state.CS === NUM_MAX)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -589,7 +589,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-          let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+          const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
           if (Number(totest.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
             match = true
           }
@@ -598,19 +598,19 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
           if (!match) {
             if (value.values.find(state => state.CS === NUM_MAX)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MAX)
+              const totest2 = value.values.find(state => state.CS === NUM_MAX)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MEAN)
+              const totest2 = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -618,7 +618,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_MIN)) {
-          let totest = value.values.find(state => state.CS === NUM_MIN)
+          const totest = value.values.find(state => state.CS === NUM_MIN)
           if (Number(totest.Value) <= Number(userValues[0]) && Number(totest.Value) >= Number(userValues[1])) {
             match = true
           }
@@ -627,25 +627,25 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
           if (!match) {
             if (value.values.find(state => state.CS === NUM_MAX)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MAX)
+              const totest2 = value.values.find(state => state.CS === NUM_MAX)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHUPP)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest2 = value.values.find(state => state.CS === NUM_MEAN)
+              const totest2 = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
             }
             if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-              let totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
+              const totest2 = value.values.find(state => state.CS === NUM_UMETHLOW)
               if (Number(totest2.Value) <= Number(userValues[1]) && Number(totest.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -655,7 +655,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) <= Number(userValues[1]) && Number(otSt.Value) >= Number(userValues[0])) {
                 match = true
               }
@@ -675,31 +675,31 @@ QuantitativeRangeDescriptorDataType.prototype = {
         let matchU = false
         let matchL = false
         if (value.values.find(state => state.CS === NUM_MAX)) {
-          let totest = value.values.find(state => state.CS === NUM_MAX)
+          const totest = value.values.find(state => state.CS === NUM_MAX)
           if (Number(totest.Value) < Number(userValues[0])) {
             matchU = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-            let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+            const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
             if (Number(totest.Value) < Number(userValues[0])) {
               matchU = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest = value.values.find(state => state.CS === NUM_MEAN)
+              const totest = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest.Value) < Number(userValues[0])) {
                 matchU = true
               }
             } else {
               if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-                let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+                const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
                 if (Number(totest.Value) < Number(userValues[0])) {
                   matchU = true
                 }
               } else {
                 if (value.values.find(state => state.CS === NUM_MIN)) {
-                  let totest = value.values.find(state => state.CS === NUM_MIN)
+                  const totest = value.values.find(state => state.CS === NUM_MIN)
                   if (Number(totest.Value) < Number(userValues[0])) {
                     matchU = true
                   }
@@ -709,31 +709,31 @@ QuantitativeRangeDescriptorDataType.prototype = {
           }
         }
         if (value.values.find(state => state.CS === NUM_MIN)) {
-          let totest = value.values.find(state => state.CS === NUM_MIN)
+          const totest = value.values.find(state => state.CS === NUM_MIN)
           if (Number(totest.Value) > Number(userValues[0])) {
             matchL = true
           }
         } else {
           if (value.values.find(state => state.CS === NUM_UMETHLOW)) {
-            let totest = value.values.find(state => state.CS === NUM_UMETHLOW)
+            const totest = value.values.find(state => state.CS === NUM_UMETHLOW)
             if (Number(totest.Value) > Number(userValues[0])) {
               matchL = true
             }
           } else {
             if (value.values.find(state => state.CS === NUM_MEAN)) {
-              let totest = value.values.find(state => state.CS === NUM_MEAN)
+              const totest = value.values.find(state => state.CS === NUM_MEAN)
               if (Number(totest.Value) > Number(userValues[0])) {
                 matchL = true
               }
             } else {
               if (value.values.find(state => state.CS === NUM_UMETHUPP)) {
-                let totest = value.values.find(state => state.CS === NUM_UMETHUPP)
+                const totest = value.values.find(state => state.CS === NUM_UMETHUPP)
                 if (Number(totest.Value) > Number(userValues[0])) {
                   matchL = true
                 }
               } else {
                 if (value.values.find(state => state.CS === NUM_MAX)) {
-                  let totest = value.values.find(state => state.CS === NUM_MAX)
+                  const totest = value.values.find(state => state.CS === NUM_MAX)
                   if (Number(totest.Value) > Number(userValues[0])) {
                     matchL = true
                   }
@@ -745,7 +745,7 @@ QuantitativeRangeDescriptorDataType.prototype = {
         // check exact match for other quantitative states
         if (testOtherStates) {
           if (Array.isArray(testOtherStates)) {
-            for (let otSt of testOtherStates) {
+            for (const otSt of testOtherStates) {
               if (Number(otSt.Value) !== Number(userValues[0])) {
                 matchL = true
                 matchU = true

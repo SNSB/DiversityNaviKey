@@ -46,21 +46,21 @@ export default {
       return this.getGuiColorTheme
     },
     selectedItems () {
-      let userDescriptors = this.getUserSearchString // StateID, CS, StateName, CID, DestType, DescName, descriptorStateUserInputs
+      const userDescriptors = this.getUserSearchString // StateID, CS, StateName, CID, DestType, DescName, descriptorStateUserInputs
       if (userDescriptors && userDescriptors.length > 0) {
         let testDescriptors = this.groupObjectArrayBy(userDescriptors, 'descName')
-        let values = Object.entries(testDescriptors)
+        const values = Object.entries(testDescriptors)
         testDescriptors = values.map(item => ({ name: item[0], children: item[1] }))
         // }
         testDescriptors.forEach(child => {
-          for (let childItem of child.children) {
+          for (const childItem of child.children) {
             let childStateName = childItem.csName
             // if (!this.getExpertViewMode && childItem.descType === this.numberDescriptorType) {
             if (childItem.descType === this.numberDescriptorType) {
               childStateName = ''
             }
             // get descriptor infos
-            let descriptorInfo = this.$store.getters.getDescriptorByID(childItem.CID)
+            const descriptorInfo = this.$store.getters.getDescriptorByID(childItem.CID)
             let appendUnit = ''
             if (descriptorInfo) {
               if (descriptorInfo.unit) {
@@ -69,20 +69,20 @@ export default {
             }
             // save user input for number state values, e.g. ['=', 1] , ['between', 10, 15]..
             if (childItem.descType === this.selectionDescriptorType) {
-              let childOperatorText = this.categoricalComparator.find(op => op.value === childItem.descriptorStateUserInputs[0]).text
-              childItem['name'] = childOperatorText + ' ' + childItem.csName
+              const childOperatorText = this.categoricalComparator.find(op => op.value === childItem.descriptorStateUserInputs[0]).text
+              childItem.name = childOperatorText + ' ' + childItem.csName
             }
             if (childItem.descType === this.numberDescriptorType && childItem.descriptorStateUserInputs.length > 1 && childItem.descriptorStateUserInputs[0] !== this.comparatorTextBetween) {
-              let childOperatorText = this.comparators.find(op => op.value === childItem.descriptorStateUserInputs[0]).text
-              childItem['name'] = childStateName + ' ' + childOperatorText + ' ' + childItem.descriptorStateUserInputs[1] + ' ' + appendUnit
+              const childOperatorText = this.comparators.find(op => op.value === childItem.descriptorStateUserInputs[0]).text
+              childItem.name = childStateName + ' ' + childOperatorText + ' ' + childItem.descriptorStateUserInputs[1] + ' ' + appendUnit
             }
             if (childItem.descType === this.numberDescriptorType && childItem.descriptorStateUserInputs.length > 2) {
-              let childOperatorText = this.comparators.find(op => op.value === childItem.descriptorStateUserInputs[0]).text
-              childItem['name'] = childStateName + ' ' + childOperatorText + ' ' + childItem.descriptorStateUserInputs[1] + ' ' + appendUnit + ' and ' + childItem.descriptorStateUserInputs[2] + ' ' + appendUnit
+              const childOperatorText = this.comparators.find(op => op.value === childItem.descriptorStateUserInputs[0]).text
+              childItem.name = childStateName + ' ' + childOperatorText + ' ' + childItem.descriptorStateUserInputs[1] + ' ' + appendUnit + ' and ' + childItem.descriptorStateUserInputs[2] + ' ' + appendUnit
             }
             if (childItem.descType === this.textDescriptorType && childItem.descriptorStateUserInputs.length > 1) {
-              let childOperatorText = this.textcomparators.find(op => op.value === childItem.descriptorStateUserInputs[0]).text
-              childItem['name'] = childOperatorText + ' : ' + childItem.descriptorStateUserInputs[1]
+              const childOperatorText = this.textcomparators.find(op => op.value === childItem.descriptorStateUserInputs[0]).text
+              childItem.name = childOperatorText + ' : ' + childItem.descriptorStateUserInputs[1]
             }
           }
         })

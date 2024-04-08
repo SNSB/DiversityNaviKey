@@ -315,14 +315,14 @@ export default {
         let tryStateImagesAvailable = false
         descriptorChildren.forEach(child => {
           // needed to save user input for number state values, e.g. ['=', 1] , ['between', 10, 15]..
-          child['descriptorStateUserInputs'] = [tempValue]
-          child['selectionId'] = 0
+          child.descriptorStateUserInputs = [tempValue]
+          child.selectionId = 0
           // console.log('toShowState', child)
           if (this.$store.getters.getShowDescriptorStateImagesIfAvailable) {
             if (child.images && child.images.length > 0) {
               this.setStateImagesAvailable(true)
               tryStateImagesAvailable = true
-              let toShow = child.images.filter(ima => ima.Order === 1)
+              const toShow = child.images.filter(ima => ima.Order === 1)
               if (toShow && toShow.length > 0) {
                 // console.log('toShowState', toShow)
                 child.ImageToShow = toShow[0].URL
@@ -361,8 +361,8 @@ export default {
         if (this.itemStates && this.itemStates.length > 0) {
           // choose first num state as default and dummy for all numerical states
           const deepClone = require('rfdc')()
-          let numItem = deepClone(this.itemStates[0])
-          let identSelectedItems = this.selectedItems.filter(oI => oI.CID === this.selectedDescriptor.id)
+          const numItem = deepClone(this.itemStates[0])
+          const identSelectedItems = this.selectedItems.filter(oI => oI.CID === this.selectedDescriptor.id)
           if (identSelectedItems && identSelectedItems.length >= 1) {
             // get max value of used selectionID
             let increasedID = 0
@@ -394,7 +394,7 @@ export default {
                 return
               }
             }
-            let filItems = this.selectedItems.filter(oI => oI.stateID === textItem.stateID)
+            const filItems = this.selectedItems.filter(oI => oI.stateID === textItem.stateID)
             if (filItems.length >= 1) {
               // get max value of used selectionID
               let increasedID = 0
@@ -420,8 +420,8 @@ export default {
         // }
       }
       // pass all selected descriptors
-      let userSelectedValue = this.selectedItems
-      let logOperatorValue = this.logOperators
+      const userSelectedValue = this.selectedItems
+      const logOperatorValue = this.logOperators
       await this.$store.dispatch('passUserSelectedDescriptors', userSelectedValue)
       // await this.$store.dispatch('passOldUserSelectedDescriptors', userSelectedValue)
       await this.$store.dispatch('passUserSelectedOperator', logOperatorValue)

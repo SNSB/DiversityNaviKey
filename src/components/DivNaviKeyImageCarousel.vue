@@ -55,7 +55,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'DivNaviKeyImageCarousel',
-  props: [ 'carouselImages' ],
+  props: ['carouselImages'],
   data: () => ({
     onboarding: 0
   }),

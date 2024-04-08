@@ -359,7 +359,7 @@ export default {
     checkboxShowTaxonInfo: false,
     checkboxShowTaxonSinAuthor: false,
     disableSaveToCacheOKButton: false,
-    sortSettings: { 'descriptors': { 'key1': 'order', 'order1': 'asc', 'key2': 'name', 'order2': 'asc' }, 'states': { 'key1': 'order', 'order1': 'asc', 'key2': 'csName', 'order2': 'asc' } },
+    sortSettings: { descriptors: { key1: 'order', order1: 'asc', key2: 'name', order2: 'asc' }, states: { key1: 'order', order1: 'asc', key2: 'csName', order2: 'asc' } },
     exportSearchFileType: process.env.VUE_APP_ADVANCEDSEARCH_EXPORT_FILETYPE,
     appVersion: process.env.VUE_APP_VERSION,
     localStorageName: process.env.VUE_APP_INDEXED_DB_NAME
@@ -422,9 +422,9 @@ export default {
       }
     },
     currentDatasource () {
-      let current = this.$store.getters.getDataSourceData
+      const current = this.$store.getters.getDataSourceData
       if (current) {
-        let masterInfo = this.$store.getters.getMasterDataSourceInfo(current)
+        const masterInfo = this.$store.getters.getMasterDataSourceInfo(current)
         if (masterInfo) {
           return { project: masterInfo.displayName, lang: current.scheme_lang }
         }
@@ -432,13 +432,13 @@ export default {
       return { project: this.$t('settings.NotSet'), lang: this.$t('settings.NotSet') }
     },
     sortSettingDescriptorKeys () {
-      return [{ 'value': 'order', 'text': this.$t('settings.defaultSort') }, { 'value': 'name', 'text': this.$t('settings.alphabeticalSort') }, { 'value': 'availability', 'text': this.$t('settings.availabilitySort') }]
+      return [{ value: 'order', text: this.$t('settings.defaultSort') }, { value: 'name', text: this.$t('settings.alphabeticalSort') }, { value: 'availability', text: this.$t('settings.availabilitySort') }]
     },
     sortSettingStateKeys () {
-      return [{ 'value': 'order', 'text': this.$t('settings.defaultSort') }, { 'value': 'csName', 'text': this.$t('settings.alphabeticalSort') }]
+      return [{ value: 'order', text: this.$t('settings.defaultSort') }, { value: 'csName', text: this.$t('settings.alphabeticalSort') }]
     },
     sortSettingOrders () {
-      return [{ 'value': 'asc', 'text': this.$t('settings.orderAsc') }, { 'value': 'desc', 'text': this.$t('settings.orderDesc') }]
+      return [{ value: 'asc', text: this.$t('settings.orderAsc') }, { value: 'desc', text: this.$t('settings.orderDesc') }]
     },
     checkboxSynchronizeDatasourceLang () {
       return this.$store.getters.getSynchronizeDatasourceLanguage
@@ -559,7 +559,7 @@ export default {
         this.$store.dispatch('passSelectedNames', { filteredNames: null, resetResult: false })
       }
       // save to local sorea
-      let keyname = this.localStorageName + '/diversityUseTaxonScopeInfo'
+      const keyname = this.localStorageName + '/diversityUseTaxonScopeInfo'
       localStorage.setItem(keyname, this.checkboxShowTaxonInfo)
     },
     onCheckboxShowTaxonSinAuthor () {
@@ -574,31 +574,31 @@ export default {
         this.$store.dispatch('passSelectedNames', { filteredNames: null, resetResult: false })
       }
       // save to local sorea
-      let keyname = this.localStorageName + '/diversityUseTaxonSinAuthor'
+      const keyname = this.localStorageName + '/diversityUseTaxonSinAuthor'
       localStorage.setItem(keyname, this.checkboxShowTaxonSinAuthor)
     },
     onShowDescriptorStateImagesIfAvailable (value) {
       this.$store.dispatch('passShowDescriptorStateImagesIfAvailable', value)
-      let keyname = this.localStorageName + '/showDescriptorStateImagesIfAvailable'
+      const keyname = this.localStorageName + '/showDescriptorStateImagesIfAvailable'
       localStorage.setItem(keyname, value)
     },
     onShowItemImagesIfAvailable (value) {
       this.$store.dispatch('passShowItemImagesIfAvailable', value)
-      let keyname = this.localStorageName + '/showItemImagesIfAvailable'
+      const keyname = this.localStorageName + '/showItemImagesIfAvailable'
       localStorage.setItem(keyname, value)
     },
     onColorThemeChanged () {
-      let navColorTheme = this.colorThemeSettings.filter(k => k.key === this.colorThemeSelect)
+      const navColorTheme = this.colorThemeSettings.filter(k => k.key === this.colorThemeSelect)
       this.$store.dispatch('passGuiColorTheme', navColorTheme[0])
       this.onSaveColorThemeToLocalStoreClick()
     },
     onLoadModeChanged () {
-      let navLoad = this.loadModes.filter(k => k.key === this.loadSelect)
+      const navLoad = this.loadModes.filter(k => k.key === this.loadSelect)
       this.$store.dispatch('passCurrentLoadMode', navLoad[0])
       this.onSaveLoadSettingToLocaleStoreClick()
     },
     onLanguageChanged (value) {
-      let navLang = this.languages.filter(k => k.key === value)
+      const navLang = this.languages.filter(k => k.key === value)
       if (navLang && navLang.length > 0) {
         this.$i18n.locale = navLang[0].key
         if (this.$i18n.locale === 'ar' || this.$i18n.locale === 'he') {
@@ -676,32 +676,32 @@ export default {
       localStorage.setItem(keyname, this.useRestrictFilter)
     },
     onSaveInclExtremeValuesToLocalStoreClick () {
-      let keyname = this.localStorageName + '/diversityNaviKeyNumFilterIncludeExtremeValues'
+      const keyname = this.localStorageName + '/diversityNaviKeyNumFilterIncludeExtremeValues'
       localStorage.setItem(keyname, this.checkboxNumericalFilterInclExtremeValues)
     },
     onSaveLanguageToLocalStoreClick () {
-      let keyname = this.localStorageName + '/diversityNaviKeyLanguage'
+      const keyname = this.localStorageName + '/diversityNaviKeyLanguage'
       localStorage.setItem(keyname, this.languageSelect)
     },
     onSaveKeyboardSettingToLocaleStoreClick () {
-      let keyname = this.localStorageName + '/diversityKeyboardSelectType'
+      const keyname = this.localStorageName + '/diversityKeyboardSelectType'
       localStorage.setItem(keyname, this.autocompleteTypeSelect)
     },
     onSaveGeneralsToLocalStoreClick () {
-      let keyname = this.localStorageName + '/diversityNoDatasourceDialog'
+      const keyname = this.localStorageName + '/diversityNoDatasourceDialog'
       localStorage.setItem(keyname, this.checkboxNoDatasourceInfo)
     },
     onSaveDefaultDatasourceToLocalStoreClick () {
-      let id = this.$store.getters.getCurrentDatasourceID
-      let keyname = this.localStorageName + '/diversityDefaultDatasourceID'
+      const id = this.$store.getters.getCurrentDatasourceID
+      const keyname = this.localStorageName + '/diversityDefaultDatasourceID'
       localStorage.setItem(keyname, id)
     },
     onSaveResultsPerPageToLocalStoreClick () {
-      let keyname = this.localStorageName + '/diversityResultPerPageSettings'
+      const keyname = this.localStorageName + '/diversityResultPerPageSettings'
       localStorage.setItem(keyname, this.perPageModel)
     },
     onSaveDescriptorSortToLocalStoreClick () {
-      let keyname = this.localStorageName + '/diversitySortSettings'
+      const keyname = this.localStorageName + '/diversitySortSettings'
       localStorage.setItem(keyname, JSON.stringify(this.sortSettings))
     },
     onUpdateApp () {

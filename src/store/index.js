@@ -97,16 +97,14 @@ const moduleSingleDatastore = {
       // current selected items
       // console.log('mapped', state.restrictedDescriptors)
       if (state.restrictedDescriptors) {
-        let restdescriptors = getters.mappedDescriptors.filter(desc => state.restrictedDescriptors.has(desc.id))
-        // console.log('restdescr', restdescriptors)
-        return restdescriptors
+        return getters.mappedDescriptors.filter(desc => state.restrictedDescriptors.has(desc.id))
       }
       // return null
       return getters.mappedDescriptors
     },
     mappedTaxonScopes: (state) => {
       let scopes = []
-      let scopeMap = new Map()
+      const scopeMap = new Map()
       // console.log('desc', state.descJson)
       if (state.taxonScope && state.taxonScope.length > 0) {
         scopes = state.taxonScope.map(scope => ({
@@ -173,8 +171,8 @@ const moduleSingleDatastore = {
      * returns all states of a given descriptor -> this data is used within state.userSelection -> array for userinputs
     */
     getChildrenOfDescriptor: (state, getters) => (id) => {
-      let states = []
-      let desc = getters.getDescriptorByID(id)
+      const states = []
+      const desc = getters.getDescriptorByID(id)
       const descriptorStates = state.descStatesJson.filter(descriptorState => descriptorState.CID === id)
       if (descriptorStates && descriptorStates.length === 0 && desc.type === state.textDescriptorType) {
         // default dummy state e.g. for descriptors of type text (they have no data in States Table)
@@ -207,15 +205,14 @@ const moduleSingleDatastore = {
       return states
     },
     getChildrenOfRestDescriptor: (state, getters) => (id) => {
-      let states = []
-      let desc = getters.getDescriptorByID(id)
+      const states = []
+      const desc = getters.getDescriptorByID(id)
       let descriptorStates = state.descStatesJson.filter(descriptorState => descriptorState.CID === id)
       if (state.restrictedDescriptors) {
-        let restState = state.restrictedDescriptors.get(id)
+        const restState = state.restrictedDescriptors.get(id)
         // console.log('reststate', restState)
         if (restState && restState.length > 0) {
           descriptorStates = descriptorStates.filter(descState => restState.includes(descState.CS))
-          // console.log('descriptorStates rest', descriptorStates)
         }
       }
       if (descriptorStates && descriptorStates.length === 0 && desc.type === state.textDescriptorType) {
@@ -255,7 +252,7 @@ const moduleSingleDatastore = {
       if (state.currentSelectedItemsList.length < stopIndex) {
         stopIndex = state.currentSelectedItemsList.length
       }
-      let slicedFilteredItems = state.currentSelectedItemsList.slice(startIndex, stopIndex)
+      // let slicedFilteredItems = state.currentSelectedItemsList.slice(startIndex, stopIndex)
       // console.log('getMappedSeel', state.currentSelectedItemsList)
       // // map scopeinfos ->
       // const mappedScopeInfo = getters.mappedTaxonScopes
@@ -269,7 +266,7 @@ const moduleSingleDatastore = {
       //   }
       // }
       // console.log('filteredItems danach', slicedFilteredItems)
-      return slicedFilteredItems
+      return state.currentSelectedItemsList.slice(startIndex, stopIndex)
     },
     getAllResultItems: (state) => {
       if (state.currentSelectedItemsList && state.currentSelectedItemsList.length > 0) {
@@ -291,9 +288,7 @@ const moduleSingleDatastore = {
       if (filteredItemIds.length < stopIndex) {
         stopIndex = filteredItemIds.length
       }
-      let slicedFilteredItems = filteredItemIds.slice(startIndex, stopIndex)
-      // console.log('filteredItems danach', slicedFilteredItems)
-      return slicedFilteredItems
+      return filteredItemIds.slice(startIndex, stopIndex)
     },
     /**
      * Returns Itemname of the itemID
@@ -312,9 +307,9 @@ const moduleSingleDatastore = {
       // console.log('getCurrentImagesFromMap', imageSource)
       const deepClone = require('rfdc')()
       if (imageSource === 'item') {
-        let mappedItems = getters.getItemIDNameMap
+        const mappedItems = getters.getItemIDNameMap
         if (mappedItems && mappedItems.has(state.selectedItemID)) {
-          let clonedItemInfos = deepClone(mappedItems.get(state.selectedItemID))
+          const clonedItemInfos = deepClone(mappedItems.get(state.selectedItemID))
           // console.log('getCurrentImagesFromMap', clonedItemInfos)
           if (clonedItemInfos && clonedItemInfos.images && clonedItemInfos.images.length > 0) {
             return clonedItemInfos.images
@@ -324,7 +319,7 @@ const moduleSingleDatastore = {
         }
       }
       if (imageSource === 'descriptor') {
-        let descriptor = getters.getDescriptorByID(sourceId)
+        const descriptor = getters.getDescriptorByID(sourceId)
         console.log('descriptor', descriptor)
       }
       return []
@@ -392,7 +387,7 @@ const moduleSingleDatastore = {
      * returns all information to the current selected item sorted by group
     */
     getSelectedItemDetailsByGroup: (state, getters) => {
-      let itemDescription = []
+      const itemDescription = []
       if (state.selectedItemID !== 0 && state.itemDescriptions && state.itemDescriptions.Descriptors) {
         // if we have no descriptors, DB may deliver [null]
         if (state.itemDescriptions.Descriptors.length > 0) {
@@ -433,11 +428,11 @@ const moduleSingleDatastore = {
         //   }
         // }
         // itemDescription.push({ group: group.group, descriptorStates: groupDescriptors })
-        let groupDescriptors = []
-        let defaultgroup = 'Descriptors'
+        const groupDescriptors = []
+        const defaultgroup = 'Descriptors'
         for (const descriptor of getters.mappedDescriptors) {
           const includedDescriptor = state.itemDescriptions.Descriptors.filter(d => d.CID === descriptor.id)
-          let descriptorStates = []
+          const descriptorStates = []
           if (includedDescriptor && includedDescriptor.length > 0) {
             for (let i = 0, j = includedDescriptor.length; i < j; i++) {
               const descState = [{ CID: includedDescriptor[i].CID, CS: includedDescriptor[i].CS }]
@@ -473,16 +468,16 @@ const moduleSingleDatastore = {
       // }
     },
     getSelectedItemScopeTaxon: (state, getters) => {
-      let taxonScope = getters.getTaxonInfos(state.selectedItemID)
+      const taxonScope = getters.getTaxonInfos(state.selectedItemID)
       if (taxonScope) {
         return taxonScope
       }
       return null
     },
     getSelectedItemScopeCitation: (state, getters) => {
-      let citations = getters.getCitationInfos(state.selectedItemID)
+      const citations = getters.getCitationInfos(state.selectedItemID)
       if (citations && citations.length > 0) {
-        let citationsArray = []
+        const citationsArray = []
         for (const citationInfo of citations) {
           let citation
           let citationList = ''
@@ -603,7 +598,7 @@ const moduleSingleDatastore = {
       state.citationScope = scope
     },
     setItemIdNamesList (state, iFilterList) {
-      let mappedNameList = new Map()
+      const mappedNameList = new Map()
       if (iFilterList) {
         for (const nameitem of iFilterList) {
           mappedNameList.set(nameitem.IID, nameitem)
@@ -691,7 +686,7 @@ const moduleSingleDatastore = {
     },
     setSelectedAsMap (state, filteredItemsMap) {
       state.currentSelectedAsMap = filteredItemsMap
-      filteredItemsMap ? state.selectedKeys = [ ...state.currentSelectedAsMap.keys() ] : state.selectedKeys = []
+      filteredItemsMap ? state.selectedKeys = [...state.currentSelectedAsMap.keys()] : state.selectedKeys = []
       // state.selectedKeys = [ ...state.currentSelectedAsMap.keys() ]
     },
     /**
@@ -741,10 +736,10 @@ const moduleSingleDatastore = {
       commit('setCurrentUserSelectedDescriptor', null) // state.currentUserSelectedDescriptor = null
     },
     mapNameScopeToItemList ({ getters, commit }) {
-      let tempFilterMap = getters.getItemIDNameMap
-      let nameScopeMap = getters.mappedTaxonScopes
+      const tempFilterMap = getters.getItemIDNameMap
+      const nameScopeMap = getters.mappedTaxonScopes
       if (tempFilterMap && nameScopeMap && nameScopeMap.size > 0) {
-        for (let tfmi of tempFilterMap.values()) {
+        for (const tfmi of tempFilterMap.values()) {
           if (tfmi) {
             tfmi.scopeTaxonInfo = []
             if (nameScopeMap && nameScopeMap.has(tfmi.IID)) {
@@ -755,24 +750,24 @@ const moduleSingleDatastore = {
         }
       }
       // change ItemIDNameList
-      let newList = Array.from(tempFilterMap.values())
+      const newList = Array.from(tempFilterMap.values())
       commit('setItemIdNamesList', newList)
     },
     mapCIDCStoIID ({ getters, commit }) {
       // console.log('mapCIDCStoIID')
-      let tempFilterList = getters.getItemIDNameMap
+      const tempFilterList = getters.getItemIDNameMap
       if (tempFilterList) {
-        let allCategoricalsList = getters.mappedDescStateItems
-        let allQuantitativsList = getters.mappedNumericalDescStateItems
-        let allTextList = getters.mappedTextDescStateItems
+        const allCategoricalsList = getters.mappedDescStateItems
+        const allQuantitativsList = getters.mappedNumericalDescStateItems
+        const allTextList = getters.mappedTextDescStateItems
         // let timebefore = Date.now()
-        let iidCIDCSMap = new Map()
+        const iidCIDCSMap = new Map()
         if (allCategoricalsList) {
-          for (let catDescState of allCategoricalsList) {
+          for (const catDescState of allCategoricalsList) {
             for (const ite of catDescState.ItemList) {
-              let itemInMap = iidCIDCSMap.has(ite.IID)
+              const itemInMap = iidCIDCSMap.has(ite.IID)
               if (itemInMap) {
-                let mapValue = iidCIDCSMap.get(ite.IID)
+                const mapValue = iidCIDCSMap.get(ite.IID)
                 mapValue.push({ CID: catDescState.CID, CS: catDescState.CS })
                 iidCIDCSMap.set(ite.IID, mapValue)
               } else {
@@ -782,11 +777,11 @@ const moduleSingleDatastore = {
           }
         }
         if (allQuantitativsList) {
-          for (let quanDescState of allQuantitativsList) {
+          for (const quanDescState of allQuantitativsList) {
             for (const ite of quanDescState.ItemList) {
-              let itemInMap = iidCIDCSMap.has(ite.IID)
+              const itemInMap = iidCIDCSMap.has(ite.IID)
               if (itemInMap) {
-                let mapValue = iidCIDCSMap.get(ite.IID)
+                const mapValue = iidCIDCSMap.get(ite.IID)
                 mapValue.push({ CID: quanDescState.CID, CS: quanDescState.CS })
                 iidCIDCSMap.set(ite.IID, mapValue)
               } else {
@@ -796,12 +791,12 @@ const moduleSingleDatastore = {
           }
         }
         if (allTextList) {
-          for (let txtDescState of allTextList) {
+          for (const txtDescState of allTextList) {
             for (const ite of txtDescState.ItemList) {
               // add to iidmap
-              let itemInMap = iidCIDCSMap.has(ite.IID)
+              const itemInMap = iidCIDCSMap.has(ite.IID)
               if (itemInMap) {
-                let mapValue = iidCIDCSMap.get(ite.IID)
+                const mapValue = iidCIDCSMap.get(ite.IID)
                 mapValue.push({ CID: txtDescState.CID, CS: txtDescState.CS })
                 iidCIDCSMap.set(ite.IID, mapValue)
               } else {
@@ -827,7 +822,7 @@ const moduleSingleDatastore = {
       }
       if (getters.getItemIDNamesList && sortDefault) {
         const deepClone = require('rfdc')()
-        let sortedList = deepClone(getters.getItemIDNamesList)
+        const sortedList = deepClone(getters.getItemIDNamesList)
         // console.log('sortedList', sortedList)
         sortedList.sort((a, b) => {
           // if (a.DisplayName && b.DisplayName) {
@@ -839,7 +834,7 @@ const moduleSingleDatastore = {
       }
       if (getters.getItemIDNamesList && !sortDefault) {
         const deepClone = require('rfdc')()
-        let sortedList = deepClone(getters.getItemIDNamesList)
+        const sortedList = deepClone(getters.getItemIDNamesList)
         sortedList.sort((a, b) => {
           if (a.scopeTaxonInfo && b.scopeTaxonInfo) {
             // if (a.scopeTaxonInfo.length > 0 && b.scopeTaxonInfo.length > 0) {
@@ -874,7 +869,7 @@ const moduleSingleDatastore = {
      * @param {} param0 commit param to send to mutations method
      */
     async loadDescJson ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_DESCRIPTORS_LIST // only relative url part of descriptors_list json file
+      const urlString = process.env.VUE_APP_DESCRIPTORS_LIST // only relative url part of descriptors_list json file
       // console.log('rootGetters.getDataSourceData', rootGetters.getDataSourceData)
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: false, urlString: urlString, params: { page: 1, pagesize: 5000 }, commitMethod: 'setDescJson', reactive: true })
@@ -887,7 +882,7 @@ const moduleSingleDatastore = {
      * @param {*} param0
      */
     async loadDescStatesJson ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_DESCRIPTORS_STATES_LIST // only url part of descriptors_list json file
+      const urlString = process.env.VUE_APP_DESCRIPTORS_STATES_LIST // only url part of descriptors_list json file
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: false, urlString: urlString, params: { page: 1, pagesize: 5000 }, commitMethod: 'setDescStatesJson', reactive: true })
       } else {
@@ -895,7 +890,7 @@ const moduleSingleDatastore = {
       }
     },
     async loadDescirptorTypesJson ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_DESCRIPTOR_TYPES
+      const urlString = process.env.VUE_APP_DESCRIPTOR_TYPES
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: false, urlString: urlString, params: null, commitMethod: 'setDescTypesJson', reactive: true })
       } else {
@@ -907,7 +902,7 @@ const moduleSingleDatastore = {
      * @param {} param0
      */
     async loadMappedDescriptorStateItemIds ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_MAPPED_DESCRIPTOR_STATE_ITEMIDS // only url part of descriptors_list json file
+      const urlString = process.env.VUE_APP_MAPPED_DESCRIPTOR_STATE_ITEMIDS // only url part of descriptors_list json file
       // set optional true, if dataset has no categorical descriptors
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: true, urlString: urlString, params: { page: 1, pagesize: 5000 }, commitMethod: 'setMappedDescStateItemsAPI', reactive: false })
@@ -920,7 +915,7 @@ const moduleSingleDatastore = {
      * @param {} param0
     */
     async loadMappedNumericalDescriptorStateItemIds ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_MAPPED_NUMERICAL_DESCRIPTOR_STATE_ITEMIDS // only url part of descriptors_list json file
+      const urlString = process.env.VUE_APP_MAPPED_NUMERICAL_DESCRIPTOR_STATE_ITEMIDS // only url part of descriptors_list json file
       // set optional true, if dataset has no numerical/quantitative descriptors
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: true, urlString: urlString, params: { page: 1, pagesize: 5000 }, commitMethod: 'setMappedNumericalDescStateItemsAPI', reactive: false })
@@ -933,7 +928,7 @@ const moduleSingleDatastore = {
      * @param {} param0
      */
     async loadItemIdNameList ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_ITEMIDLIST // only url part of descriptors_list json file
+      const urlString = process.env.VUE_APP_ITEMIDLIST // only url part of descriptors_list json file
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: false, urlString: urlString, params: { page: 1, pagesize: 12000 }, commitMethod: 'setItemIdNamesList', reactive: false })
       } else {
@@ -941,7 +936,7 @@ const moduleSingleDatastore = {
       }
     },
     async loadMappedTextDescriptorStateItemIds ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_MAPPED_TEXT_DESCRIPTOR_STATE_ITEMIDS
+      const urlString = process.env.VUE_APP_MAPPED_TEXT_DESCRIPTOR_STATE_ITEMIDS
       // set optional true, if dataset has no textual descriptors
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: true, urlString: urlString, params: { page: 1, pagesize: 5000 }, commitMethod: 'setMappedTextDescStateItemsAPI', reactive: false })
@@ -950,7 +945,7 @@ const moduleSingleDatastore = {
       }
     },
     async loadTaxonScope ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_TAXON_SCOPE
+      const urlString = process.env.VUE_APP_TAXON_SCOPE
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: true, urlString: urlString, params: { page: 1, pagesize: 5000 }, commitMethod: 'setTaxonScope', reactive: false })
       } else {
@@ -966,7 +961,7 @@ const moduleSingleDatastore = {
     //   }
     // },
     async loadCitationScope ({ dispatch, rootGetters }) {
-      let urlString = process.env.VUE_APP_CITATION_SCOPE
+      const urlString = process.env.VUE_APP_CITATION_SCOPE
       if (rootGetters.getDataSourceData) {
         await dispatch('getApiData', { optional: true, urlString: urlString, params: { page: 1, pagesize: 5000 }, commitMethod: 'setCitationScope', reactive: false })
       } else {
@@ -983,7 +978,7 @@ const moduleSingleDatastore = {
     // },
     async loadItemDescriptionJson ({ dispatch, state, rootGetters }) {
       if (state.selectedItemID) {
-        let urlString = process.env.VUE_APP_ITEM_DESCRIPTION
+        const urlString = process.env.VUE_APP_ITEM_DESCRIPTION
         if (rootGetters.getDataSourceData) {
           await dispatch('getApiData', { optional: false, urlString: urlString, appendUrl: state.selectedItemID, params: { page: 1, pagesize: 5000 }, commitMethod: 'setItemDescriptionsAPI', reactive: true })
         } else {
@@ -1038,9 +1033,9 @@ const moduleSingleDatastore = {
       }
       // console.log('filteredItems', filteredItems)
       if (filteredItems && filteredItems.length > 0 && !resetResult) {
-        let tempFilterItemMap = getters.getItemIDNameMap
+        const tempFilterItemMap = getters.getItemIDNameMap
         // console.log('tempFilterItemMap', tempFilterItemMap)
-        for (let fiItem of filteredItems) {
+        for (const fiItem of filteredItems) {
           if (tempFilterItemMap.has(fiItem.IID)) {
             mappedFiltedItems.push(tempFilterItemMap.get(fiItem.IID))
           }
@@ -1092,7 +1087,7 @@ const moduleSingleDatastore = {
             // }
           })
         }
-        for (let matchedItem of mappedFiltedItems) {
+        for (const matchedItem of mappedFiltedItems) {
           filteredItemsMap.set(matchedItem.IID, matchedItem)
         }
       } else {
@@ -1112,15 +1107,15 @@ const moduleSingleDatastore = {
       // restrict descriptor and state selection in quick search if enabled
       if (rootGetters.getUseRestrictFilter && !rootGetters.getExpertViewMode && rootGetters.isCurrentSearchDescriptorMode && mappedFiltedItems) {
         // console.log('set restricted')
-        let restrictedDescs = new Map()
-        let iidMap = getters.getIidDescStateMap
+        const restrictedDescs = new Map()
+        const iidMap = getters.getIidDescStateMap
         for (const matchedItem of mappedFiltedItems) {
-          let itemDescs = iidMap.get(matchedItem.IID)
+          const itemDescs = iidMap.get(matchedItem.IID)
           if (itemDescs) {
             for (const descCS of itemDescs) {
-              let testDC = restrictedDescs.has(descCS.CID)
+              const testDC = restrictedDescs.has(descCS.CID)
               if (testDC) {
-                let dc = restrictedDescs.get(descCS.CID)
+                const dc = restrictedDescs.get(descCS.CID)
                 if (!dc.includes(descCS.CS)) {
                   dc.push(descCS.CS)
                 }
@@ -1131,20 +1126,20 @@ const moduleSingleDatastore = {
             }
           }
         }
-        let toDelete = []
+        const toDelete = []
         // check if only single state left, than delete this descriptor as well
-        for (let checkForSingles of restrictedDescs) {
+        for (const checkForSingles of restrictedDescs) {
           if (checkForSingles && checkForSingles.length === 2) {
             if (checkForSingles[1].length === 1) {
               // only single state left, check if categorical type then delete
-              let isCatId = getters.mappedDescStateItems.filter(catDesc => catDesc.CID === checkForSingles[0])
+              const isCatId = getters.mappedDescStateItems.filter(catDesc => catDesc.CID === checkForSingles[0])
               if (isCatId && isCatId.length > 0) {
                 toDelete.push(checkForSingles[0])
               }
             }
           }
         }
-        for (let descToDel of toDelete) {
+        for (const descToDel of toDelete) {
           if (restrictedDescs.has(descToDel)) {
             restrictedDescs.delete(descToDel)
           }
@@ -1154,18 +1149,18 @@ const moduleSingleDatastore = {
       } else {
         if (mappedFiltedItems && resetResult) {
           // console.log('restrict descriptors list once to eliminate nulls ')
-          let restrictedDescKeys = new Map()
-          let iidMap = getters.getIidDescStateMap
+          const restrictedDescKeys = new Map()
+          const iidMap = getters.getIidDescStateMap
           for (const matchedItem of mappedFiltedItems) {
-            let itemDescs = iidMap.get(matchedItem.IID)
+            const itemDescs = iidMap.get(matchedItem.IID)
             if (itemDescs) {
               for (const descCS of itemDescs) {
                 restrictedDescKeys.set(descCS.CID, descCS)
               }
             }
           }
-          let descKeys = [ ...restrictedDescKeys.keys() ]
-          let tempDesc = state.descJson.filter(desc => descKeys.includes(desc.CID))
+          const descKeys = [...restrictedDescKeys.keys()]
+          const tempDesc = state.descJson.filter(desc => descKeys.includes(desc.CID))
           // console.log('tempDesc', tempDesc)
           commit('setDescJson', tempDesc)
         }
@@ -1183,9 +1178,9 @@ const moduleSingleDatastore = {
         filteredNames = getters.getAllResultNames
       }
       if (filteredNames && filteredNames.length > 0 && !resetResult) {
-        let tempFilterItemMap = getters.getItemIDNameMap
+        const tempFilterItemMap = getters.getItemIDNameMap
         // console.log('tempFilterItemMap', tempFilterItemMap)
-        for (let fiItem of filteredNames) {
+        for (const fiItem of filteredNames) {
           if (tempFilterItemMap.has(fiItem.IID)) {
             mappedFiltedNames.push(tempFilterItemMap.get(fiItem.IID))
           }
@@ -1248,7 +1243,7 @@ const moduleSingleDatastore = {
             // }
           })
         }
-        for (let matchedItem of mappedFiltedNames) {
+        for (const matchedItem of mappedFiltedNames) {
           filteredItemsMap.set(matchedItem.IID, matchedItem)
         }
       } else {
@@ -1274,7 +1269,7 @@ const moduleSingleDatastore = {
     async setNextItemIDOfResult ({ commit, dispatch, state }) {
       // const currentItem = state.selectedItemID
       if (state.selectedKeys && state.selectedKeys.length > 0) {
-        let currentItemIndex = state.selectedKeys.indexOf(state.selectedItemID)
+        const currentItemIndex = state.selectedKeys.indexOf(state.selectedItemID)
         let next = null
         state.selectedKeys.length > currentItemIndex + 1 ? next = state.selectedKeys[currentItemIndex + 1] : next = state.selectedKeys[currentItemIndex]
         commit('setSelectedItemID', next)
@@ -1284,7 +1279,7 @@ const moduleSingleDatastore = {
     async setPreviousItemIDOfResult ({ commit, dispatch, state }) {
       // const currentItem = state.selectedItemID
       if (state.selectedKeys && state.selectedKeys.length > 0) {
-        let currentItemIndex = state.selectedKeys.indexOf(state.selectedItemID)
+        const currentItemIndex = state.selectedKeys.indexOf(state.selectedItemID)
         let prev = null
         currentItemIndex > 0 ? prev = state.selectedKeys[currentItemIndex - 1] : prev = state.selectedKeys[currentItemIndex]
         commit('setSelectedItemID', prev)
@@ -1329,11 +1324,11 @@ const rootModule = {
     userLoggedIn: false,
     userName: '',
     userLoginExpired: false,
-    isNewVersionObject: { 'isNewAppVersion': false, 'isNewRestVersion': false },
-    sortSettings: { 'descriptors': { 'key1': 'order', 'order1': 'asc', 'key2': 'name', 'order2': 'asc' }, 'states': { 'key1': 'order', 'order1': 'asc', 'key2': 'csName', 'order2': 'asc' } },
-    appLanguage: { 'key': 'en', 'languageText': 'settings.en' },
-    loadingMode: { 'key': 'cacheFirst', 'loadingText': 'Offline first mode: Try to get data from cache, otherwise online', 'shortText': 'settings.shortCacheFirst' },
-    guiColorTheme: { 'key': 'indigo', 'colorlabel': 'settings.indigoColorTheme', 'color': 'grey lighten-4 indigo--text text--darken-3', 'toolbarcolor': 'indigo lighten-2', 'colordarken': 'grey lighten-2 indigo--text text--darken-3', 'colortext': 'indigo darken-3', 'darktext': 'indigo darken-3', 'greyText': 'grey lighten-4 grey--text text--darken-2' }
+    isNewVersionObject: { isNewAppVersion: false, isNewRestVersion: false },
+    sortSettings: { descriptors: { key1: 'order', order1: 'asc', key2: 'name', order2: 'asc' }, states: { key1: 'order', order1: 'asc', key2: 'csName', order2: 'asc' } },
+    appLanguage: { key: 'en', languageText: 'settings.en' },
+    loadingMode: { key: 'cacheFirst', loadingText: 'Offline first mode: Try to get data from cache, otherwise online', shortText: 'settings.shortCacheFirst' },
+    guiColorTheme: { key: 'indigo', colorlabel: 'settings.indigoColorTheme', color: 'grey lighten-4 indigo--text text--darken-3', toolbarcolor: 'indigo lighten-2', colordarken: 'grey lighten-2 indigo--text text--darken-3', colortext: 'indigo darken-3', darktext: 'indigo darken-3', greyText: 'grey lighten-4 grey--text text--darken-2' }
   },
   getters: {
     getApiLoading: state => {
@@ -1352,26 +1347,26 @@ const rootModule = {
       return state.masterDatasources
     },
     getAvailabelSchemesOfMaster: (state, getters) => (master) => {
-      let allDBs = getters.getAvailableDatasources
+      const allDBs = getters.getAvailableDatasources
       if (allDBs) {
         // console.log('allDBs', allDBs)
-        let filtered = allDBs.filter(m => m.scheme_master === master.scheme_master && m.ds_name === master.ds_name)
+        const filtered = allDBs.filter(m => m.scheme_master === master.scheme_master && m.ds_name === master.ds_name)
         return filtered
       }
       return null
     },
     getDataSourceInfoById: (state, getters) => (id) => {
-      let allDbs = getters.getAvailableDatasources
+      const allDbs = getters.getAvailableDatasources
       if (allDbs) {
-        let infoDB = allDbs.filter(m => m.id === id)
+        const infoDB = allDbs.filter(m => m.id === id)
         return infoDB
       }
       return null
     },
     getMasterDataSourceInfo: (state, getters) => (ds) => {
       // console.log('get', ds)
-      let mastername = ds.ds_name + '_' + ds.scheme_master
-      let info = getters.getMasterDatasources.filter(mas => mas.id === mastername)
+      const mastername = ds.ds_name + '_' + ds.scheme_master
+      const info = getters.getMasterDatasources.filter(mas => mas.id === mastername)
       if (info && info.length > 0) {
         return info[0]
       }
@@ -1470,8 +1465,8 @@ const rootModule = {
     },
     getDBMasterMetadata: (state, getters) => (ds) => {
       // console.log('get', ds)
-      let mastername = ds.ds_name + '_' + ds.scheme_master
-      let info = state.mastersMetaData.filter(mas => mas.id === mastername)
+      const mastername = ds.ds_name + '_' + ds.scheme_master
+      const info = state.mastersMetaData.filter(mas => mas.id === mastername)
       if (info && info.length > 0) {
         return info[0]
       }
@@ -1628,11 +1623,11 @@ const rootModule = {
       const versionInfo = await DataService.initIndexDB()
       // const versionInfo = [{ id: 1, dnk_app_version: 'v0.8.3', dnk_rest_version: '' }]
       // console.log('old version info', versionInfo)
-      let isNewVersionObject = await DataService.checkVersionChanges(versionInfo, serviceurl, process.env.VUE_APP_API_VERSION, process.env.VUE_APP_VERSION, process.env.VUE_APP_VERSION_INFOS)
+      const isNewVersionObject = await DataService.checkVersionChanges(versionInfo, serviceurl, process.env.VUE_APP_API_VERSION, process.env.VUE_APP_VERSION, process.env.VUE_APP_VERSION_INFOS)
       // console.log('isNewVers', isNewVersionObject)
       commit('setIsNewVersionObject', isNewVersionObject)
       let availableDbs = []
-      let tempBindings = []
+      const tempBindings = []
       try {
         availableDbs = await DataService.getAvailableDatasourcesFromREST(hosturl, process.env.VUE_APP_API_PROJECTS, tempBindings, process.env.VUE_APP_LIST_DATASOURCES)
       } catch (error) {
@@ -1646,7 +1641,7 @@ const rootModule = {
         commit('setApiErrored', true)
         throw error
       }
-      let tempDatasources = availableDbs
+      const tempDatasources = availableDbs
       let tempMasterDatasources = []
       // filter master dbs
       tempMasterDatasources = tempDatasources.filter((item2, index, self) => self.findIndex(t => t.scheme_master === item2.scheme_master && t.ds_name === item2.ds_name) === index)
@@ -1704,13 +1699,13 @@ const rootModule = {
       // const timebefore = Date.now()
       const dbRoot = getters.getDataSourceData.ds_rest_endpoint
       const hosturl = process.env.VUE_APP_ROOT_API + process.env.VUE_APP_API_DATA
-      let pageParameter = params.params
+      const pageParameter = params.params
       const commitMethod = params.commitMethod
       let appendUrl
       params.appendUrl ? appendUrl = params.appendUrl : appendUrl = ''
       // const reactive = params.reactive
-      let urlString = params.urlString
-      let dbOptional = params.optional
+      const urlString = params.urlString
+      const dbOptional = params.optional
       let rresp = []
       if (appendUrl !== '') {
         try {
@@ -1814,7 +1809,7 @@ const rootModule = {
     },
     async registerUser ({ commit }, userData) {
       const hosturl = process.env.VUE_APP_ROOT_API + process.env.VUE_APP_API_SERVICE
-      let registerUrl = hosturl + process.env.VUE_APP_API_USER_REGISTER
+      const registerUrl = hosturl + process.env.VUE_APP_API_USER_REGISTER
       try {
         await AuthService.register(registerUrl, userData)
       } catch (err) {
@@ -1826,7 +1821,7 @@ const rootModule = {
     async loginUser ({ commit, dispatch, getters }, userData) {
       // console.log('login User')
       const hosturl = process.env.VUE_APP_ROOT_API + process.env.VUE_APP_API_SERVICE
-      let loginUrl = hosturl + process.env.VUE_APP_API_USER_LOGIN
+      const loginUrl = hosturl + process.env.VUE_APP_API_USER_LOGIN
       // console.log('loginUrl', loginUrl)
       try {
         await AuthService.login(loginUrl, userData)
@@ -1860,50 +1855,36 @@ const rootModule = {
     async logoutUser ({ commit, dispatch }, deleteData) {
       console.log('logout and delete', deleteData)
       const hosturl = process.env.VUE_APP_ROOT_API + process.env.VUE_APP_API_SERVICE
-      let logoutUrl = hosturl + process.env.VUE_APP_API_USER_LOGOUT
+      const logoutUrl = hosturl + process.env.VUE_APP_API_USER_LOGOUT
       // console.log('logoutUrl', logoutUrl)
-      try {
-        await AuthService.logout(logoutUrl)
-          .then(async () => {
-            // console.log('responseData', response)
+      await AuthService.logout(logoutUrl)
+        .then(async () => {
+          // console.log('responseData', response)
+          if (deleteData) {
+            await DataService.removeIndexDB()
+            console.log('indexDB removed')
+            commit('setUserLoggedInStatus', false)
+            commit('setUserName', '')
+            // reinit
+            await dispatch('loadAllAvailableDatasources')
+            await dispatch('resetDataAfterLogout')
+          }
+        })
+        .catch(async err => {
+          // console.log('error in logoutUser(): ', err)
+          if (err.status_code === 401) {
+            await commit('setUserLoggedInStatus', false)
+            await commit('setUserName', '')
             if (deleteData) {
-              try {
-                await DataService.removeIndexDB()
-                console.log('indexDB removed')
-                commit('setUserLoggedInStatus', false)
-                commit('setUserName', '')
-                // reinit
-                await dispatch('loadAllAvailableDatasources')
-                await dispatch('resetDataAfterLogout')
-              } catch (err) {
-                // console.log(err)
-                throw err
-              }
+              await DataService.removeIndexDB()
+              console.log('indexDB removed')
+              // reinit
+              await dispatch('loadAllAvailableDatasources')
+              await dispatch('resetDataAfterLogout')
             }
-          })
-          .catch(async err => {
-            // console.log('error in logoutUser(): ', err)
-            if (err.status_code === 401) {
-              await commit('setUserLoggedInStatus', false)
-              await commit('setUserName', '')
-              if (deleteData) {
-                try {
-                  await DataService.removeIndexDB()
-                  console.log('indexDB removed')
-                  // reinit
-                  await dispatch('loadAllAvailableDatasources')
-                  await dispatch('resetDataAfterLogout')
-                } catch (err) {
-                  // console.log(err)
-                  throw err
-                }
-              }
-            }
-            throw err
-          })
-      } catch (err) {
-        throw err
-      }
+          }
+          throw err
+        })
       return Promise.resolve()
     },
     /**
@@ -1961,10 +1942,10 @@ const rootModule = {
         }
         if (state.datasourceData) {
           // get master db
-          let masterInfo = getters.getMasterDataSourceInfo(state.datasourceData)
+          const masterInfo = getters.getMasterDataSourceInfo(state.datasourceData)
           if (masterInfo) {
-            let availableSchemes = getters.getAvailabelSchemesOfMaster(masterInfo)
-            let checkForLanguageScheme = availableSchemes.filter(scm => scm.scheme_lang === lang.key)
+            const availableSchemes = getters.getAvailabelSchemesOfMaster(masterInfo)
+            const checkForLanguageScheme = availableSchemes.filter(scm => scm.scheme_lang === lang.key)
             if (checkForLanguageScheme && checkForLanguageScheme.length > 0) {
               // load datasource
               // load project default datasource - master
@@ -2032,7 +2013,7 @@ const rootModule = {
     },
     passOKNewVersionInfo ({ commit }) {
       // reset
-      commit('setIsNewVersionObject', { 'isNewAppVersion': false, 'isNewRestVersion': false })
+      commit('setIsNewVersionObject', { isNewAppVersion: false, isNewRestVersion: false })
     },
     passUsername ({ commit }, value) {
       // console.log('pass username', value)

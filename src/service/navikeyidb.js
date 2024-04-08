@@ -69,40 +69,36 @@ export default {
       return
     }
     let versionData = []
-    try {
-      let responseData = await this.checkIndexedDBContainsStores(DB_NAME, [process.env.VUE_APP_VERSION_INFOS])
-      if (!responseData) {
-        let version = Number(await this.getDatabaseVersion(DB_NAME))
-        // console.log('version in initialCreate', version)
-        const database = await this.openDatabase(DB_NAME, version + 1, {
-          upgrade (db) {
-            console.log('create store for version infos')
-            if (!db.objectStoreNames.contains(process.env.VUE_APP_VERSION_INFOS)) {
-              db.createObjectStore(process.env.VUE_APP_VERSION_INFOS, {
-                keyPath: 'id'
-              })
-            }
+    let responseData = await this.checkIndexedDBContainsStores(DB_NAME, [process.env.VUE_APP_VERSION_INFOS])
+    if (!responseData) {
+      const version = Number(await this.getDatabaseVersion(DB_NAME))
+      // console.log('version in initialCreate', version)
+      const database = await this.openDatabase(DB_NAME, version + 1, {
+        upgrade (db) {
+          console.log('create store for version infos')
+          if (!db.objectStoreNames.contains(process.env.VUE_APP_VERSION_INFOS)) {
+            db.createObjectStore(process.env.VUE_APP_VERSION_INFOS, {
+              keyPath: 'id'
+            })
           }
+        }
+      })
+        .then(response => {
+          return response
         })
-          .then(response => {
-            return response
-          })
-          .catch(error => {
-            console.log('Error in openDB() for version info', error)
-            throw error
-          })
-        // console.log('database close')
-        database.close()
-      } else {
-        responseData = await this.getDataLocally('', process.env.VUE_APP_VERSION_INFOS, '')
-        versionData = responseData
-      }
-    } catch (err) {
-      throw err
+        .catch(error => {
+          console.log('Error in openDB() for version info', error)
+          throw error
+        })
+      // console.log('database close')
+      database.close()
+    } else {
+      responseData = await this.getDataLocally('', process.env.VUE_APP_VERSION_INFOS, '')
+      versionData = responseData
     }
-    let test = await this.checkIndexedDBContainsStores(DB_NAME, [process.env.VUE_APP_LIST_DATASOURCES, process.env.VUE_APP_LIST_MASTERS_METADATA])
+    const test = await this.checkIndexedDBContainsStores(DB_NAME, [process.env.VUE_APP_LIST_DATASOURCES, process.env.VUE_APP_LIST_MASTERS_METADATA])
     if (!test) {
-      let version = Number(await this.getDatabaseVersion(DB_NAME))
+      const version = Number(await this.getDatabaseVersion(DB_NAME))
       const database = await this.openDatabase(DB_NAME, version + 1, {
         upgrade (db) {
           console.log('create store for list of datasources')
@@ -134,7 +130,7 @@ export default {
       console.log('This browser doesn\'t support IndexedDB')
       return
     }
-    let test = await this.checkIndexedDBContainsStores(DB_NAME, [dbproject + table])
+    const test = await this.checkIndexedDBContainsStores(DB_NAME, [dbproject + table])
     if (!test) {
       let version = Number(await this.getDatabaseVersion(DB_NAME))
       version = version + 1
@@ -236,7 +232,7 @@ export default {
       console.log('This browser doesn\'t support IndexedDB')
       return
     }
-    let test = await this.checkIndexedDBContainsStores(DB_NAME, [dbproject + table])
+    const test = await this.checkIndexedDBContainsStores(DB_NAME, [dbproject + table])
     if (test) {
       let version = Number(await this.getDatabaseVersion(DB_NAME))
       version = version + 1

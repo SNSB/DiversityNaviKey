@@ -33,9 +33,9 @@ export default {
       return this.$store.getters.getGuiColorTheme
     },
     metadata () {
-      let current = this.$store.getters.getDataSourceData
+      const current = this.$store.getters.getDataSourceData
       if (current) {
-        let masterInfo = this.$store.getters.getDBMasterMetadata(current)
+        const masterInfo = this.$store.getters.getDBMasterMetadata(current)
         if (masterInfo && masterInfo.metadata.length > 0) {
           return masterInfo.metadata[0]
         }
